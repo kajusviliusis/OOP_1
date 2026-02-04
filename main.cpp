@@ -1,32 +1,46 @@
 #include <iostream>
 #include <string>
-#include <vector>
 
 struct Studentas{
   std::string vardas;
   std::string pavarde;
-  int egz_rez;
-  std::vector<int> tarp_rez;
+  int egz;
+  int* nd;
 };
 
-double galutinis(Studentas A)
+double galutinis(Studentas A, int n)
 {
   double pazSuma = 0;
-  for(auto pazymys : A.tarp_rez)
+  for(int i=0; i<n; i++)
   {
-    pazSuma += pazymys;
+    pazSuma += A.nd[i];
   }
-  double vidurkis = pazSuma / A.tarp_rez.size();
-
-  return 0,4 * vidurkis + 0,6 * A.egz_rez;
+  double vidurkis = pazSuma / n;
+  return 0,4 * vidurkis + 0,6 * A.egz;
 }
 
 int main()
 {
   Studentas A;
+  int n;
   std::cout << "iveskite varda, pavarde" << std::endl;
   std::cin >> A.vardas >> A.pavarde;
   std::cout << "iveskite egzamino rezultata" << std::endl;
-  std::cin >> A.egz_rez;
+  std::cin >> A.egz;
+  std::cout << "iveskite kiek yra namu darbu rezultatu" << std::endl;
+  std::cin >> n;
+
+  A.nd = new int[n];
+
   std::cout << "iveskite namu darbu tarpnius rezultatus" << std::endl;
+  for(int i=0; i<n; i++)
+  {
+    std::cin >> A.nd[i];
+    std::cout << std::endl;
+  }
+
+
+
+  delete [] A.nd;
+
 }
