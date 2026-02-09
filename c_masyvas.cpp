@@ -1,6 +1,7 @@
 #include <cctype>
 #include <iomanip>
 #include <iostream>
+#include <ostream>
 #include <string>
 #include <algorithm>
 #include <vector>
@@ -54,64 +55,94 @@ double galutinis(const Studentas& A, double medVid)
 int main()
 {
   std::vector<Studentas> studentai;
-  char pasirinkimas;
+  int pasirinkimas;
 
-  while(true){
-    Studentas s;
+  std::cout << "Pasirinkite veiksmą įvesdami:" << std::endl;
+  std::cout << "1 - Įvesti ranka" << std::endl;
+  std::cout << "2 - Generuoti pažymius" << std::endl;
+  std::cout << "3 - Generuoti studentus ir pažymius" << std::endl;
+  std::cout << "4 - Baigti darbą" << std::endl;
+  std::cin >> pasirinkimas;
 
-    std::cout << "Įveskite studento vardą (0 - baigti)" << std::endl;
-    std::cin >> s.vardas;
-    if(s.vardas=="0") break;
+  if(pasirinkimas >= 1 && pasirinkimas <= 4)
+  {
+    switch(pasirinkimas)
+    {
+      case 1:
+        std::cout << "Pasirinkai įvesti ranka" << std::endl;
+        std::cout << "-----------------------" << std::endl;
+        while(true){
+          Studentas s;
 
-    std::cout << "Įveskite studento pavardę" << std::endl;
-    std::cin >> s.pavarde;
+          std::cout << "Įveskite studento vardą (0 - baigti)" << std::endl;
+          std::cin >> s.vardas;
+          if(s.vardas=="0") break;
 
-    std::cout << "Įveskite egzamino rezultatą (1-10)" << std::endl;
-    std::cin >> s.egz;
-    while(s.egz < 1 || s.egz > 10){
-      std::cout << "Įveskite dar kartą. Rezultatas turi būti tarp 1-10." << std::endl;
-      std::cin >> s.egz;
+          std::cout << "Įveskite studento pavardę" << std::endl;
+          std::cin >> s.pavarde;
+
+          std::cout << "Įveskite egzamino rezultatą (1-10)" << std::endl;
+          std::cin >> s.egz;
+          while(s.egz < 1 || s.egz > 10){
+            std::cout << "Įveskite dar kartą. Rezultatas turi būti tarp 1-10." << std::endl;
+            std::cin >> s.egz;
+          }
+
+          std::cout << "Įveskite namų darbų tarpinius rezultatus (1-10), (0 - baigti)" << std::endl;
+
+          int max_talpa = 100;
+          int pazymys;
+          int kiek = 0;
+          int* laikini_pazymiai = new int[max_talpa];
+
+          while (true) {
+            std::cin >> pazymys;
+            if(pazymys==0) break;
+
+            while(pazymys < 1 || pazymys>10){
+              std::cout << "Įveskite dar kartą. Rezultatas turi būti tarp 1-10." << std::endl;
+              std::cin >> pazymys;
+            }
+            laikini_pazymiai[kiek] = pazymys;
+            kiek++;
+          }
+
+          s.ndKiekis = kiek;
+          s.nd = new int[kiek];
+
+          for(int i=0; i<kiek; i++) s.nd[i] = laikini_pazymiai[i];
+
+          delete [] laikini_pazymiai;
+
+          studentai.push_back(s); 
+        }
+        break;
+      
+      case 2:
+
+        break;
+      
+      case 3:
+        
+        break;
+
+      case 4:
+        std::cout << "Programa baigta" << std::endl;
+        break;
     }
-
-    std::cout << "Įveskite namų darbų tarpinius rezultatus (1-10), (0 - baigti)" << std::endl;
-
-    int max_talpa = 10;
-    int pazymys;
-    int kiek = 0;
-    int* laikini_pazymiai = new int[max_talpa];
-
-    while (true) {
-      std::cin >> pazymys;
-      if(pazymys==0) break;
-
-      while(pazymys < 1 || pazymys>10){
-        std::cout << "Įveskite dar kartą. Rezultatas turi būti tarp 1-10." << std::endl;
-        std::cin >> pazymys;
-      }
-      laikini_pazymiai[kiek++] = pazymys;
-    }
-
-    s.ndKiekis = kiek;
-    s.nd = new int[kiek];
-
-    for(int i=0; i<kiek; i++) s.nd[i] = laikini_pazymiai[i];
-
-    delete [] laikini_pazymiai;
-
-    studentai.push_back(s);
-    
   }
 
+  char skaiciavimas;
   std::cout << "Ar skaičiuoti pagal vidurkį ar medianą? (v arba m)" << std::endl;
-  std::cin >> pasirinkimas; 
+  std::cin >> skaiciavimas; 
 
-  std::cout << std::left << std::setw(10) << "Vardas" << std::setw(15) << "Pavardė" << "Galutinis (" << (std::tolower(pasirinkimas) == 'm' ? "Med.)" : "Vid.)" ) << std::endl;
+  std::cout << std::left << std::setw(10) << "Vardas" << std::setw(15) << "Pavardė" << "Galutinis (" << (std::tolower(skaiciavimas) == 'm' ? "Med.)" : "Vid.)" ) << std::endl;
 
   std::cout << "--------------------------------------------" << std::endl;
   for(Studentas s : studentai)
   {
     double galutinisBalas;
-    if(std::tolower(pasirinkimas) == 'v') galutinisBalas = galutinis(s, vidurkis(s));
+    if(std::tolower(skaiciavimas) == 'v') galutinisBalas = galutinis(s, vidurkis(s));
     else galutinisBalas = galutinis(s, mediana(s));
 
     std::cout << std::setw(10) << s.vardas << std::setw(15) << s.pavarde << std::setprecision(2) << std::fixed << galutinisBalas;
