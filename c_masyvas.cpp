@@ -86,6 +86,25 @@ void generuotiPazymius(Studentas& s)
   s.egz = rand() % 10 + 1;
 }
 
+void generuotiStudentus(std::vector<Studentas>& studentai)
+{
+  std::string vardai[] = {"Jonas", "Petras", "Antanas", "Marius", "Lukas", "Mantas", "Darius", "Andrius", "Tomas", "Linas"};
+  std::string pavardes[] = {"Kazlauskas", "Jankauskas", "Petrauskas", "Paukštis", "Stankevičius", "Vasiliauskas", "Žukauskas", "Butkus", "Paura", "Kairys"};
+
+  int studentuKiekis = rand() % 7 + 1;
+
+  for(int i=0; i<studentuKiekis; i++)
+  {
+    Studentas s;
+    s.vardas = vardai[rand() % 10];
+    s.pavarde = pavardes[rand() % 10];
+
+    generuotiPazymius(s);
+    studentai.push_back(s);
+  }
+
+}
+
 int main()
 {
   std::vector<Studentas> studentai;
@@ -154,7 +173,7 @@ int main()
         break;
       
       case 2:
-        std::cout << "Pasirinkai generuoti pažymius" << std::endl;
+        std::cout << "Pasirinkai generuoti studentus ir jų pažymius" << std::endl;
         std::cout << "-----------------------------" << std::endl;
         while(true){
           Studentas s;
@@ -173,7 +192,10 @@ int main()
         break;
       
       case 3:
-        
+        std::cout << "Pasirinkai generuoti pažymius" << std::endl;
+        std::cout << "-----------------------------" << std::endl;
+        generuotiStudentus(studentai);
+        rodytiRezultatus(studentai);
         break;
 
       case 4:
