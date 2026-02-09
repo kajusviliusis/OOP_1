@@ -52,20 +52,41 @@ double galutinis(const Studentas& A, double medVid)
   return 0.4*medVid + 0.6*A.egz;
 }
 
+void rodytiRezultatus(const std::vector<Studentas>& studentai)
+{
+  char skaiciavimas;
+  std::cout << "Ar skaičiuoti pagal vidurkį ar medianą? (v arba m)" << std::endl;
+  std::cin >> skaiciavimas; 
+
+  std::cout << std::left << std::setw(10) << "Vardas" << std::setw(15) << "Pavardė" << "Galutinis (" << (std::tolower(skaiciavimas) == 'm' ? "Med.)" : "Vid.)" ) << std::endl;
+
+  std::cout << "--------------------------------------------" << std::endl;
+  for(Studentas s : studentai)
+  {
+    double galutinisBalas;
+    if(std::tolower(skaiciavimas) == 'v') galutinisBalas = galutinis(s, vidurkis(s));
+    else galutinisBalas = galutinis(s, mediana(s));
+
+    std::cout << std::setw(10) << s.vardas << std::setw(15) << s.pavarde << std::setprecision(2) << std::fixed << galutinisBalas;
+    std::cout << std::endl;
+  }
+
+
+}
+
 int main()
 {
   std::vector<Studentas> studentai;
   int pasirinkimas;
+  bool testi=true;
 
-  std::cout << "Pasirinkite veiksmą įvesdami:" << std::endl;
-  std::cout << "1 - Įvesti ranka" << std::endl;
-  std::cout << "2 - Generuoti pažymius" << std::endl;
-  std::cout << "3 - Generuoti studentus ir pažymius" << std::endl;
-  std::cout << "4 - Baigti darbą" << std::endl;
-  std::cin >> pasirinkimas;
-
-  if(pasirinkimas >= 1 && pasirinkimas <= 4)
-  {
+  while(testi){
+    std::cout << "Pasirinkite veiksmą įvesdami:" << std::endl;
+    std::cout << "1 - Įvesti ranka" << std::endl;
+    std::cout << "2 - Generuoti pažymius" << std::endl;
+    std::cout << "3 - Generuoti studentus ir pažymius" << std::endl;
+    std::cout << "4 - Baigti darbą" << std::endl;
+    std::cin >> pasirinkimas;
     switch(pasirinkimas)
     {
       case 1:
@@ -116,6 +137,7 @@ int main()
 
           studentai.push_back(s); 
         }
+        rodytiRezultatus(studentai);
         break;
       
       case 2:
@@ -128,28 +150,16 @@ int main()
 
       case 4:
         std::cout << "Programa baigta" << std::endl;
+        testi = false;
         break;
+
+      default:
+        std::cout << "Blogas pasirinkimas" << std::endl;
     }
   }
 
-  char skaiciavimas;
-  std::cout << "Ar skaičiuoti pagal vidurkį ar medianą? (v arba m)" << std::endl;
-  std::cin >> skaiciavimas; 
 
-  std::cout << std::left << std::setw(10) << "Vardas" << std::setw(15) << "Pavardė" << "Galutinis (" << (std::tolower(skaiciavimas) == 'm' ? "Med.)" : "Vid.)" ) << std::endl;
-
-  std::cout << "--------------------------------------------" << std::endl;
-  for(Studentas s : studentai)
-  {
-    double galutinisBalas;
-    if(std::tolower(skaiciavimas) == 'v') galutinisBalas = galutinis(s, vidurkis(s));
-    else galutinisBalas = galutinis(s, mediana(s));
-
-    std::cout << std::setw(10) << s.vardas << std::setw(15) << s.pavarde << std::setprecision(2) << std::fixed << galutinisBalas;
-    std::cout << std::endl;
-  }
-
-  for(Studentas s : studentai)
+  for(Studentas &s : studentai)
   {
     delete [] s.nd;
   }
