@@ -1,10 +1,12 @@
 #include <cctype>
+#include <cstddef>
 #include <iomanip>
 #include <iostream>
-#include <ostream>
 #include <string>
 #include <algorithm>
 #include <vector>
+#include <ctime>
+#include <cstdlib>
 
 struct Studentas{
   std::string vardas;
@@ -70,8 +72,18 @@ void rodytiRezultatus(const std::vector<Studentas>& studentai)
     std::cout << std::setw(10) << s.vardas << std::setw(15) << s.pavarde << std::setprecision(2) << std::fixed << galutinisBalas;
     std::cout << std::endl;
   }
+}
 
+void generuotiPazymius(Studentas& s)
+{
+  s.ndKiekis = rand() % 15 + 1;
+  s.nd = new int[s.ndKiekis];
+  for(int i=0; i<s.ndKiekis; i++)
+  {
+    s.nd[i] = rand() % 10 + 1;
+  }
 
+  s.egz = rand() % 10 + 1;
 }
 
 int main()
@@ -79,6 +91,7 @@ int main()
   std::vector<Studentas> studentai;
   int pasirinkimas;
   bool testi=true;
+  srand(time(NULL));
 
   while(testi){
     std::cout << "Pasirinkite veiksmą įvesdami:" << std::endl;
@@ -141,7 +154,22 @@ int main()
         break;
       
       case 2:
+        std::cout << "Pasirinkai generuoti pažymius" << std::endl;
+        std::cout << "-----------------------------" << std::endl;
+        while(true){
+          Studentas s;
+          std::cout << "Įveskite studento vardą (0 - baigti)" << std::endl;
+          std::cin >> s.vardas;
+          if(s.vardas=="0") break;
 
+          std::cout << "Įveskite studento pavardę" << std::endl;
+          std::cin >> s.pavarde;
+
+          generuotiPazymius(s);
+
+          studentai.push_back(s);
+        }
+        rodytiRezultatus(studentai);
         break;
       
       case 3:
