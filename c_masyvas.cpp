@@ -118,7 +118,13 @@ int main()
     std::cout << "2 - Generuoti pažymius" << std::endl;
     std::cout << "3 - Generuoti studentus ir pažymius" << std::endl;
     std::cout << "4 - Baigti darbą" << std::endl;
-    std::cin >> pasirinkimas;
+    if(!(std::cin >> pasirinkimas))
+    {
+      std::cout << "Neteisingas pasirinkimas, bandykite dar kartą" << std::endl;
+      std::cin.clear();
+      std::cin.ignore(10000,'\n');
+      continue;
+    }
     switch(pasirinkimas)
     {
       case 1:
@@ -133,14 +139,15 @@ int main()
 
           std::cout << "Įveskite studento pavardę" << std::endl;
           std::cin >> s.pavarde;
-
-          std::cout << "Įveskite egzamino rezultatą (1-10)" << std::endl;
-          std::cin >> s.egz;
-          while(s.egz < 1 || s.egz > 10){
-            std::cout << "Įveskite dar kartą. Rezultatas turi būti tarp 1-10." << std::endl;
-            std::cin >> s.egz;
+          while(true)
+          {
+            std::cout << "Įveskite egzamino rezultatą (1-10)" << std::endl;
+            if(std::cin >> s.egz && s.egz >=1 && s.egz <= 10) break;
+          
+            std::cout << "Klaida, bandykite dar kartą" << std::endl;
+            std::cin.clear();
+            std::cin.ignore(10000,'\n');
           }
-
           std::cout << "Įveskite namų darbų tarpinius rezultatus (1-10), (0 - baigti)" << std::endl;
 
           int max_talpa = 100;
@@ -149,7 +156,13 @@ int main()
           int* laikini_pazymiai = new int[max_talpa];
 
           while (true) {
-            std::cin >> pazymys;
+            if(!(std::cin >> pazymys))
+            {
+              std::cout << "Klaida, bandykite dar kartą" << std::endl;
+              std::cin.clear();
+              std::cin.ignore(10000,'\n');
+              continue;
+            }
             if(pazymys==0) break;
 
             while(pazymys < 1 || pazymys>10){
