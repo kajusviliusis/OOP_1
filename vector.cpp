@@ -12,40 +12,36 @@ struct Studentas{
   std::string vardas;
   std::string pavarde;
   int egz;
-  int* nd;
-  int ndKiekis;
+  std::vector<int> nd;
 };
 
 double vidurkis(const Studentas& s)
 {
+  if(s.nd.empty()) return 0;
+
   double pazSuma = 0;
-  for(int i=0; i<s.ndKiekis; i++)
+  for(int i=0; i<s.nd.size(); i++)
   {
     pazSuma += s.nd[i];
   }
-  return (s.ndKiekis > 0) ? pazSuma / double(s.ndKiekis) : 0;
+  return pazSuma / double(s.nd.size());
 }
 
 double mediana(const Studentas& s)
 {
-  if(s.ndKiekis <= 0 ) return 0.0;
+  if(s.nd.empty()) return 0;
 
-  int* kopija = new int[s.ndKiekis];
-  for(int i=0; i<s.ndKiekis; i++)
-  {
-    kopija[i] = s.nd[i];
-  }
-  std::sort(kopija, kopija + s.ndKiekis);
+  std::vector<int> kopija = s.nd;
+  std::sort(kopija.begin(), kopija.end());
 
   double med;
-  if(s.ndKiekis % 2 == 0)
+  if(s.nd.size() % 2 == 0)
   {
-    med = (kopija[s.ndKiekis / 2 - 1] + kopija[s.ndKiekis / 2]) / 2.0;
+    med = (kopija[s.nd.size() / 2 - 1] + kopija[s.nd.size() / 2]) / 2.0;
   }
   else {
-    med = kopija[s.ndKiekis / 2];
+    med = kopija[s.nd.size() / 2];
   }
-  delete [] kopija;
   return med;
 }
 
@@ -76,11 +72,11 @@ void rodytiRezultatus(const std::vector<Studentas>& studentai)
 
 void generuotiPazymius(Studentas& s)
 {
-  s.ndKiekis = rand() % 15 + 1;
-  s.nd = new int[s.ndKiekis];
-  for(int i=0; i<s.ndKiekis; i++)
+  int kiekis = rand() % 15 + 1;
+  s.nd.clear();
+  for(int i=0; i<kiekis; i++)
   {
-    s.nd[i] = rand() % 10 + 1;
+    s.nd.push_back(rand() % 10 + 1);
   }
 
   s.egz = rand() % 10 + 1;
@@ -110,7 +106,7 @@ int main()
   std::vector<Studentas> studentai;
   int pasirinkimas;
   bool testi=true;
-  srand(time(NULL));
+  srand(time(nullptr));
 
   while(testi){
     std::cout << "Pasirinkite veiksmą įvesdami:" << std::endl;
@@ -143,10 +139,7 @@ int main()
 
           std::cout << "Įveskite namų darbų tarpinius rezultatus (1-10), (0 - baigti)" << std::endl;
 
-          int max_talpa = 100;
           int pazymys;
-          int kiek = 0;
-          int* laikini_pazymiai = new int[max_talpa];
 
           while (true) {
             std::cin >> pazymys;
@@ -155,20 +148,10 @@ int main()
             while(pazymys < 1 || pazymys>10){
               std::cout << "Įveskite dar kartą. Rezultatas turi būti tarp 1-10." << std::endl;
               std::cin >> pazymys;
-             }
+            }
 
-            if(kiek>=max_talpa) break;
-
-            laikini_pazymiai[kiek] = pazymys;
-            kiek++;
+            s.nd.push_back(pazymys);
           }
-
-          s.ndKiekis = kiek;
-          s.nd = new int[kiek];
-
-          for(int i=0; i<kiek; i++) s.nd[i] = laikini_pazymiai[i];
-
-          delete [] laikini_pazymiai;
 
           studentai.push_back(s); 
         }
@@ -196,7 +179,7 @@ int main()
       
       case 3:
         std::cout << "Pasirinkai generuoti studentus ir jų pažymius" << std::endl;
-        std::cout << "---------------------------------------------" << std::endl;
+        std::cout << "-----------------------------" << std::endl;
         generuotiStudentus(studentai);
         rodytiRezultatus(studentai);
         break;
@@ -210,11 +193,4 @@ int main()
         std::cout << "Blogas pasirinkimas" << std::endl;
     }
   }
-
-
-  for(Studentas &s : studentai)
-  {
-    delete [] s.nd;
-  }
-
 }
