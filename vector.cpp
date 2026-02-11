@@ -71,7 +71,7 @@ void rodytiRezultatus(const std::vector<Studentas>& studentai)
 
 void generuotiPazymius(Studentas& s)
 {
-  int kiekis = rand() % 15 + 1;
+  int kiekis = 5;
   s.nd.clear();
   for(int i=0; i<kiekis; i++)
   {

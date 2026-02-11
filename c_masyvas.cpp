@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
-#include <vector>
 #include <ctime>
 #include <cstdlib>
 
@@ -54,8 +53,9 @@ double galutinis(const Studentas& A, double medVid)
   return 0.4*medVid + 0.6*A.egz;
 }
 
-void rodytiRezultatus(const std::vector<Studentas>& studentai)
+void rodytiRezultatus(Studentas* studentai, int kiekis)
 {
+  if (kiekis == 0) return;
   char skaiciavimas;
   std::cout << "Ar skaičiuoti pagal vidurkį ar medianą? (v arba m)" << std::endl;
   std::cin >> skaiciavimas; 
@@ -63,8 +63,9 @@ void rodytiRezultatus(const std::vector<Studentas>& studentai)
   std::cout << std::left << std::setw(10) << "Vardas" << std::setw(15) << "Pavardė" << "Galutinis (" << (std::tolower(skaiciavimas) == 'm' ? "Med.)" : "Vid.)" ) << std::endl;
 
   std::cout << "--------------------------------------------" << std::endl;
-  for(const Studentas& s : studentai)
+  for(int i = 0; i < kiekis; i++)
   {
+    Studentas& s = studentai[i];
     double galutinisBalas;
     if(std::tolower(skaiciavimas) == 'v') galutinisBalas = galutinis(s, vidurkis(s));
     else galutinisBalas = galutinis(s, mediana(s));
@@ -86,7 +87,18 @@ void generuotiPazymius(Studentas& s)
   s.egz = rand() % 10 + 1;
 }
 
-void generuotiStudentus(std::vector<Studentas>& studentai)
+void padidintiMasyva(Studentas*& studentai, int& talpa) {
+    int naujaTalpa = (talpa == 0) ? 2 : talpa * 2;
+    Studentas* naujasMasyvas = new Studentas[naujaTalpa];
+    for (int i = 0; i < talpa; i++) {
+        naujasMasyvas[i] = studentai[i];
+    }
+    delete[] studentai;
+    studentai = naujasMasyvas;
+    talpa = naujaTalpa;
+}
+
+void generuotiStudentus(Studentas*& studentai, int& kiekis, int& talpa)
 {
   std::string vardai[] = {"Jonas", "Petras", "Antanas", "Marius", "Lukas", "Mantas", "Darius", "Andrius", "Tomas", "Linas"};
   std::string pavardes[] = {"Kazlauskas", "Jankauskas", "Petrauskas", "Paukštis", "Stankevičius", "Vasiliauskas", "Žukauskas", "Butkus", "Paura", "Kairys"};
@@ -95,19 +107,21 @@ void generuotiStudentus(std::vector<Studentas>& studentai)
 
   for(int i=0; i<studentuKiekis; i++)
   {
-    Studentas s;
-    s.vardas = vardai[rand() % 10];
-    s.pavarde = pavardes[rand() % 10];
-
-    generuotiPazymius(s);
-    studentai.push_back(s);
+    if (kiekis >= talpa) padidintiMasyva(studentai, talpa);
+    
+    studentai[kiekis].vardas = vardai[rand() % 10];
+    studentai[kiekis].pavarde = pavardes[rand() % 10];
+    generuotiPazymius(studentai[kiekis]);
+    kiekis++;
   }
-
 }
 
 int main()
 {
-  std::vector<Studentas> studentai;
+  int talpa = 10;
+  int kiekis = 0;
+  Studentas* studentai = new Studentas[talpa];
+  
   int pasirinkimas;
   bool testi=true;
   srand(time(NULL));
@@ -127,10 +141,11 @@ int main()
     }
     switch(pasirinkimas)
     {
-      case 1:
+case 1:
         std::cout << "Pasirinkai įvesti ranka" << std::endl;
         std::cout << "-----------------------" << std::endl;
         while(true){
+          if (kiekis >= talpa) padidintiMasyva(studentai, talpa);
           Studentas s;
 
           std::cout << "Įveskite studento vardą (0 - baigti)" << std::endl;
@@ -148,50 +163,61 @@ int main()
             std::cin.clear();
             std::cin.ignore(10000,'\n');
           }
+
           std::cout << "Įveskite namų darbų tarpinius rezultatus (1-10), (0 - baigti)" << std::endl;
 
-          int max_talpa = 100;
+          int dabartine_nd_talpa = 2; 
+          int k_nd = 0;
+          int* laikini_pazymiai = new int[dabartine_nd_talpa];
           int pazymys;
-          int kiek = 0;
-          int* laikini_pazymiai = new int[max_talpa];
 
           while (true) {
-            if(!(std::cin >> pazymys))
-            {
-              std::cout << "Klaida, bandykite dar kartą" << std::endl;
+            if(!(std::cin >> pazymys)) {
+              std::cout << "Klaida (įvesta ne skaičius), bandykite dar kartą" << std::endl;
               std::cin.clear();
-              std::cin.ignore(10000,'\n');
+              std::cin.ignore(10000, '\n');
               continue;
             }
-            if(pazymys==0) break;
 
-            while(pazymys < 1 || pazymys>10){
+            if(pazymys == 0) break;
+
+            if(pazymys < 1 || pazymys > 10) {
               std::cout << "Įveskite dar kartą. Rezultatas turi būti tarp 1-10." << std::endl;
-              std::cin >> pazymys;
-             }
+              continue;
+            }
 
-            if(kiek>=max_talpa) break;
+            if (k_nd >= dabartine_nd_talpa) {
+              int nauja_nd_talpa = dabartine_nd_talpa * 2;
+              int* naujas_nd_masyvas = new int[nauja_nd_talpa];
+              for (int i = 0; i < dabartine_nd_talpa; i++) {
+                naujas_nd_masyvas[i] = laikini_pazymiai[i];
+              }
+              delete[] laikini_pazymiai;
+              laikini_pazymiai = naujas_nd_masyvas;
+              dabartine_nd_talpa = nauja_nd_talpa;
+            }
 
-            laikini_pazymiai[kiek] = pazymys;
-            kiek++;
+            laikini_pazymiai[k_nd] = pazymys;
+            k_nd++;
           }
 
-          s.ndKiekis = kiek;
-          s.nd = new int[kiek];
-
-          for(int i=0; i<kiek; i++) s.nd[i] = laikini_pazymiai[i];
-
+          s.ndKiekis = k_nd;
+          s.nd = new int[k_nd];
+          for(int i=0; i<k_nd; i++) s.nd[i] = laikini_pazymiai[i];
+          
           delete [] laikini_pazymiai;
 
-          studentai.push_back(s); 
+          studentai[kiekis] = s; 
+          kiekis++;
         }
-        rodytiRezultatus(studentai);
+        rodytiRezultatus(studentai, kiekis);
         break;
-      
+
       case 2:
         std::cout << "Pasirinkai generuoti pažymius" << std::endl;
         std::cout << "-----------------------------" << std::endl;
         while(true){
+          if (kiekis >= talpa) padidintiMasyva(studentai, talpa);
           Studentas s;
           std::cout << "Įveskite studento vardą (0 - baigti)" << std::endl;
           std::cin >> s.vardas;
@@ -202,16 +228,17 @@ int main()
 
           generuotiPazymius(s);
 
-          studentai.push_back(s);
+          studentai[kiekis] = s;
+          kiekis++;
         }
-        rodytiRezultatus(studentai);
+        rodytiRezultatus(studentai, kiekis);
         break;
       
       case 3:
         std::cout << "Pasirinkai generuoti studentus ir jų pažymius" << std::endl;
         std::cout << "---------------------------------------------" << std::endl;
-        generuotiStudentus(studentai);
-        rodytiRezultatus(studentai);
+        generuotiStudentus(studentai, kiekis, talpa);
+        rodytiRezultatus(studentai, kiekis);
         break;
 
       case 4:
@@ -224,10 +251,11 @@ int main()
     }
   }
 
-
-  for(Studentas &s : studentai)
+  for(int i = 0; i < kiekis; i++)
   {
-    delete [] s.nd;
+    delete [] studentai[i].nd;
   }
+  delete [] studentai;
 
+  return 0;
 }
