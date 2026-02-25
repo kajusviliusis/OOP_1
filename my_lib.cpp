@@ -3,8 +3,11 @@
 #include <iostream>
 #include <iomanip>
 #include <algorithm>
+#include <vector>
 #include <cctype>
 #include <cstdlib>
+#include <sstream>
+#include <fstream>
 
 double vidurkis(const Studentas& s)
 {
@@ -67,7 +70,7 @@ void rodytiRezultatus(const std::vector<Studentas>& studentai)
 
 void generuotiPazymius(Studentas& s)
 {
-    int kiekis = rand() % 15 + 1;
+    int kiekis = 5;
     s.nd.clear();
 
     for (int i = 0; i < kiekis; i++)
@@ -91,4 +94,41 @@ void generuotiStudentus(std::vector<Studentas>& studentai)
         generuotiPazymius(s);
         studentai.push_back(s);
     }
+}
+
+void nuskaitytiFaila(std::vector<Studentas>& studentai, std::string failoVardas)
+{
+  std::ifstream failas(failoVardas);
+  if(!failas)
+  {
+    std::cout << "Nepavyko atidaryti failo." << std::endl;
+    return;
+  }
+
+    std::stringstream buffer;
+    buffer << failas.rdbuf();
+    
+    std::string eilute;
+    std::getline(buffer, eilute);
+    
+    while (std::getline(buffer,eilute))
+    {
+      std::stringstream ss(eilute);
+
+      Studentas s;
+      ss >> s.vardas >> s.pavarde;
+
+      int pazymys;
+      while(ss >> pazymys)
+      {
+        s.nd.push_back(pazymys);
+      }
+
+      s.egz = s.nd.back();
+      s.nd.pop_back();
+
+      studentai.push_back(s);
+    }
+
+    failas.close();
 }

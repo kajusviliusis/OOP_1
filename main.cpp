@@ -1,6 +1,5 @@
 #include "my_lib.h"
 
-
 #include <cctype>
 #include <iomanip>
 #include <iostream>
