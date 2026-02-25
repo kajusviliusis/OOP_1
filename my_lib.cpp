@@ -132,3 +132,24 @@ void nuskaitytiFaila(std::vector<Studentas>& studentai, std::string failoVardas)
 
     failas.close();
 }
+void rodytiIsFailo(const std::vector<Studentas>& studentai)
+{
+    std::cout << std::left
+              << std::setw(15) << "Vardas"
+              << std::setw(15) << "Pavardė"
+              << std::setw(20) << "Galutinis (Vid.)"
+              << "Galutinis (Med.)\n";
+
+    std::cout << "-------------------------------------------------------------\n";
+
+    for (const Studentas& s : studentai)
+    {
+        double galVid = galutinis(s, vidurkis(s));
+        double galMed = galutinis(s, mediana(s));
+
+        std::cout << std::setw(15) << s.vardas
+                  << std::setw(15) << s.pavarde
+                  << std::setw(20) << std::fixed << std::setprecision(2) << galVid
+                  << galMed << "\n";
+    }
+}

@@ -15,13 +15,15 @@ int main()
   int pasirinkimas;
   bool testi=true;
   srand(time(nullptr));
+  std::string failoVardas;
 
   while(testi){
     std::cout << "Pasirinkite veiksmą įvesdami:" << std::endl;
     std::cout << "1 - Įvesti ranka" << std::endl;
     std::cout << "2 - Generuoti pažymius" << std::endl;
     std::cout << "3 - Generuoti studentus ir pažymius" << std::endl;
-    std::cout << "4 - Baigti darbą" << std::endl;
+    std::cout << "4 - Nuskaityti duomenis iš failo" << std::endl;
+    std::cout << "5 - Baigti darbą" << std::endl;
     if(!(std::cin >> pasirinkimas))
     {
       std::cout << "Neteisingas pasirinkimas, bandykite dar kartą" << std::endl;
@@ -104,6 +106,16 @@ int main()
         break;
 
       case 4:
+        std::cout << "Pasirinkai nuskaityti duomenis iš failo" << std::endl;
+        std::cout << "-----------------------------" << std::endl;
+        std::cout << "Iš kokio failo nuskaityti duomenis?" << std::endl;
+        std::cin >> failoVardas;
+
+        nuskaitytiFaila(studentai, failoVardas);
+        rodytiIsFailo(studentai);
+        break;
+
+      case 5:
         std::cout << "Programa baigta" << std::endl;
         testi = false;
         break;

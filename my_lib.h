@@ -17,5 +17,7 @@ double galutinis(const Studentas& A, double medVid);
 void rodytiRezultatus(const std::vector<Studentas>& studentai);
 void generuotiPazymius(Studentas& s);
 void generuotiStudentus(std::vector<Studentas>& studentai);
+void nuskaitytiFaila(std::vector<Studentas>& studentai, std::string failoVardas);
+void rodytiIsFailo(const std::vector<Studentas>& studentai);
 
 #endif
