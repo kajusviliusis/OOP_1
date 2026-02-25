@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <vector>
 #include <cctype>
-#include <cstdlib>
 #include <sstream>
 #include <fstream>
 
@@ -132,24 +131,26 @@ void nuskaitytiFaila(std::vector<Studentas>& studentai, std::string failoVardas)
 
     failas.close();
 }
-void rodytiIsFailo(const std::vector<Studentas>& studentai)
+void rodytiRez(const std::vector<Studentas>& studentai)
 {
-    std::cout << std::left
-              << std::setw(15) << "Vardas"
-              << std::setw(15) << "Pavardė"
-              << std::setw(20) << "Galutinis (Vid.)"
-              << "Galutinis (Med.)\n";
+    std::stringstream buffer;
+    buffer << std::left << std::setw(20) << "Vardas" << std::setw(20) << "Pavardė" << std::setw(20)
+        << "Galutinis (Vid.)" << std::setw(20) << "Galutinis (Med.)" << std::endl;
 
-    std::cout << "-------------------------------------------------------------\n";
+    for (const Studentas& s : studentai) {
+        buffer << std::left << std::setw(20) << s.vardas << std::setw(20) << s.pavarde << std::setw(20) << std::fixed << std::setprecision(2) << galutinis(s, vidurkis(s)) << std::setw(20) << std::fixed << std::setprecision(2) << galutinis(s, mediana(s)) << std::endl;
+    }
 
-    for (const Studentas& s : studentai)
-    {
-        double galVid = galutinis(s, vidurkis(s));
-        double galMed = galutinis(s, mediana(s));
-
-        std::cout << std::setw(15) << s.vardas
-                  << std::setw(15) << s.pavarde
-                  << std::setw(20) << std::fixed << std::setprecision(2) << galVid
-                  << galMed << "\n";
+    int pasirinkimas;
+    std::cout << "Kur norite matyti rezultatus? ekrane(1), faile(2)" << std::endl;
+    std::cin >> pasirinkimas;
+    if(pasirinkimas == 1) {
+        std::cout << buffer.str();
+    }
+    else if(pasirinkimas == 2) {
+        std::ofstream failas("Rezultatai.txt");
+        failas << buffer.str();
+        failas.close();
     }
 }
+//TODO rusiavimas ir testavimas kitu failu su laiko nuskaitymu

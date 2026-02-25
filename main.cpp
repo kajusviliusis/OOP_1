@@ -112,7 +112,7 @@ int main()
         std::cin >> failoVardas;
 
         nuskaitytiFaila(studentai, failoVardas);
-        rodytiIsFailo(studentai);
+        rodytiRez(studentai);
         break;
 
       case 5:
