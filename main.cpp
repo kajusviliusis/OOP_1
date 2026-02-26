@@ -23,7 +23,8 @@ int main()
     std::cout << "2 - Generuoti pažymius" << std::endl;
     std::cout << "3 - Generuoti studentus ir pažymius" << std::endl;
     std::cout << "4 - Nuskaityti duomenis iš failo" << std::endl;
-    std::cout << "5 - Baigti darbą" << std::endl;
+    std::cout << "5 - Testuoti failu nuskaityma" << std::endl;
+    std::cout << "6 - Baigti darbą" << std::endl;
     if(!(std::cin >> pasirinkimas))
     {
       std::cout << "Neteisingas pasirinkimas, bandykite dar kartą" << std::endl;
@@ -122,6 +123,17 @@ int main()
         break;
 
       case 5:
+        std::cout << "Pasirinkai testuoti failu nuskaityma" << std::endl;
+        std::cout << "-----------------------------" << std::endl;
+
+        int kartai;
+        std::cout << "Kiek kartu norit nuskaityti faila?" << std::endl;
+        std::cin >> kartai;
+
+        nuskaitytiFailaTestavimui(studentai, kartai);
+        break;
+
+      case 6:
         std::cout << "Programa baigta" << std::endl;
         testi = false;
         break;

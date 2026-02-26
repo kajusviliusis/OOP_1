@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <vector>
 #include <cctype>
+#include <chrono>
 #include <sstream>
 #include <fstream>
 
@@ -95,7 +96,7 @@ void generuotiStudentus(std::vector<Studentas>& studentai)
     }
 }
 
-void nuskaitytiFaila(std::vector<Studentas>& studentai, std::string failoVardas)
+void nuskaitytiFaila(std::vector<Studentas>& studentai, const std::string& failoVardas)
 {
   std::ifstream failas(failoVardas);
   if(!failas)
@@ -106,10 +107,10 @@ void nuskaitytiFaila(std::vector<Studentas>& studentai, std::string failoVardas)
 
     std::stringstream buffer;
     buffer << failas.rdbuf();
-    
+
     std::string eilute;
     std::getline(buffer, eilute);
-    
+
     while (std::getline(buffer,eilute))
     {
       std::stringstream ss(eilute);
@@ -189,4 +190,62 @@ void rikiuotiStudentus(std::vector<Studentas>& studentai, int pasirinkimas) {
             std::cout << "Neteisingas pasirinkimas" << std::endl;
     }
 }
-//todo testavimas skaitymo
+
+void nuskaitytiFailaTestavimui(std::vector<Studentas>& studentai, int kartai)
+{
+    std::string failoVardas;
+    std::cout << "Koki faila naudoti testavimui?" << std::endl;
+    std::cin >> failoVardas;
+
+    using namespace std::chrono;
+    double totalSec = 0.0;
+
+    for (int i=0; i<kartai; i++) {
+        std::ifstream failas(failoVardas);
+        if(!failas)
+        {
+            std::cout << "Nepavyko atidaryti failo." << std::endl;
+            return;
+        }
+
+        studentai.clear();
+
+        auto start = high_resolution_clock::now();
+
+        std::stringstream buffer;
+        buffer << failas.rdbuf();
+
+        std::string eilute;
+        std::getline(buffer, eilute);
+
+        while (std::getline(buffer,eilute))
+        {
+            std::stringstream ss(eilute);
+
+            Studentas s;
+            ss >> s.vardas >> s.pavarde;
+
+            int pazymys;
+            while(ss >> pazymys)
+            {
+                s.nd.push_back(pazymys);
+            }
+
+            s.egz = s.nd.back();
+            s.nd.pop_back();
+
+            s.galVid = galutinis(s, vidurkis(s));
+            s.galMed = galutinis(s, mediana(s));
+
+            studentai.push_back(s);
+        }
+        auto end = high_resolution_clock::now();
+        duration<double> durationSec = end - start;
+        totalSec += durationSec.count();
+        failas.close();
+    }
+
+    double average = totalSec / kartai;
+    std::cout << "Vidutinis failo nuskaitymo laikas po " << kartai << " testu: " << average << " s" << std::endl;
+}
+
