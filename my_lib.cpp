@@ -126,11 +126,15 @@ void nuskaitytiFaila(std::vector<Studentas>& studentai, std::string failoVardas)
       s.egz = s.nd.back();
       s.nd.pop_back();
 
+      s.galVid = galutinis(s, vidurkis(s));
+      s.galMed = galutinis(s, mediana(s));
+
       studentai.push_back(s);
     }
 
     failas.close();
 }
+
 void rodytiRez(const std::vector<Studentas>& studentai)
 {
     std::stringstream buffer;
@@ -153,4 +157,36 @@ void rodytiRez(const std::vector<Studentas>& studentai)
         failas.close();
     }
 }
-//TODO rusiavimas ir testavimas kitu failu su laiko nuskaitymu
+
+bool rikiuotiVarda(const Studentas& A, const Studentas& B) {
+    return A.vardas < B.vardas;
+}
+bool rikiuotiPavarde(const Studentas& A, const Studentas& B) {
+    return A.pavarde < B.pavarde;
+}
+bool rikiuotiPagalGalutiniVid(const Studentas& A, const Studentas& B) {
+    return A.galVid < B.galVid;
+}
+bool rikiuotiPagalGalutiniMed(const Studentas& A, const Studentas& B) {
+    return A.galMed < B.galMed;
+}
+
+void rikiuotiStudentus(std::vector<Studentas>& studentai, int pasirinkimas) {
+    switch (pasirinkimas) {
+        case 1:
+            std::sort(studentai.begin(), studentai.end(), rikiuotiVarda);
+            break;
+        case 2:
+            std::sort(studentai.begin(), studentai.end(), rikiuotiPavarde);
+            break;
+        case 3:
+            std::sort(studentai.begin(), studentai.end(), rikiuotiPagalGalutiniVid);
+            break;
+        case 4:
+            std::sort(studentai.begin(), studentai.end(), rikiuotiPagalGalutiniMed);
+            break;
+        default:
+            std::cout << "Neteisingas pasirinkimas" << std::endl;
+    }
+}
+//todo testavimas skaitymo
