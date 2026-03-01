@@ -123,12 +123,18 @@ void nuskaitytiFaila(std::vector<Studentas>& studentai, const std::string& failo
       std::stringstream ss(eilute);
 
       Studentas s;
-      ss >> s.vardas >> s.pavarde;
+      if (!(ss >> s.vardas >> s.pavarde)) {
+          throw std::runtime_error("Blogas formatas faile");
+      }
 
       int pazymys;
       while(ss >> pazymys)
       {
         s.nd.push_back(pazymys);
+      }
+
+      if (s.nd.empty()) {
+          throw std::runtime_error("Nera pazymiu studentui " + s.vardas + " " + s.pavarde);
       }
 
       s.egz = s.nd.back();
@@ -155,14 +161,22 @@ void rodytiRez(const std::vector<Studentas>& studentai)
 
     int pasirinkimas;
     std::cout << "Kur norite matyti rezultatus? ekrane(1), faile(2)" << std::endl;
-    std::cin >> pasirinkimas;
+    if (!(std::cin >> pasirinkimas)) {
+        std::cin.clear();
+        std::cin.ignore(10000,'\n');
+        throw std::runtime_error("Rezultatu rodymo pasirinkime ivedamas ne skaicius");
+    }
     if(pasirinkimas == 1) {
         std::cout << buffer.str();
     }
     else if(pasirinkimas == 2) {
         std::ofstream failas("Rezultatai.txt");
+        if (!failas) throw std::runtime_error("Nepavyko sukurti failo");
         failas << buffer.str();
         failas.close();
+    }
+    else if (pasirinkimas != 1 && pasirinkimas != 2) {
+        throw std::out_of_range("Pasirinkimas turi buti 1 arba 2");
     }
 }
 
