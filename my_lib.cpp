@@ -11,8 +11,9 @@
 
 double vidurkis(const Studentas& s)
 {
-    if (s.nd.empty()) return 0;
-
+    if (s.nd.empty()) {
+        throw std::runtime_error("Negalima skaiciuoti vidurkio, truksta namu darbu ivertinimu");
+    }
     double pazSuma = 0;
     for (int i = 0; i < s.nd.size(); i++)
         pazSuma += s.nd[i];
@@ -22,7 +23,9 @@ double vidurkis(const Studentas& s)
 
 double mediana(const Studentas& s)
 {
-    if (s.nd.empty()) return 0;
+    if (s.nd.empty()) {
+        throw std::runtime_error("Negalima skaiciuoti medianos, truksta namu darbu ivertinimu");
+    }
 
     std::vector<int> kopija = s.nd;
     std::sort(kopija.begin(), kopija.end());
