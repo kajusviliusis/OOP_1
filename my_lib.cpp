@@ -12,7 +12,7 @@
 double vidurkis(const Studentas& s)
 {
     if (s.nd.empty()) {
-        throw std::runtime_error("Negalima skaiciuoti vidurkio, truksta namu darbu ivertinimu");
+        throw std::invalid_argument("Negalima skaiciuoti vidurkio, truksta namu darbu ivertinimu");
     }
     double pazSuma = 0;
     for (int i = 0; i < s.nd.size(); i++)
@@ -24,7 +24,7 @@ double vidurkis(const Studentas& s)
 double mediana(const Studentas& s)
 {
     if (s.nd.empty()) {
-        throw std::runtime_error("Negalima skaiciuoti medianos, truksta namu darbu ivertinimu");
+        throw std::invalid_argument("Negalima skaiciuoti medianos, truksta namu darbu ivertinimu");
     }
 
     std::vector<int> kopija = s.nd;
@@ -47,10 +47,15 @@ void rodytiRezultatus(const std::vector<Studentas>& studentai)
     std::cout << "Ar skaičiuoti pagal vidurkį ar medianą? (v arba m)\n";
     std::cin >> skaiciavimas;
 
+    skaiciavimas = std::tolower(skaiciavimas);
+    if (skaiciavimas != 'v' && skaiciavimas != 'm') {
+        throw std::invalid_argument("Neteisingas pasirinkimas, galima ivesti tik 'v' arba 'm' ");
+    }
+
     std::cout << std::left << std::setw(10) << "Vardas"
               << std::setw(15) << "Pavardė"
               << "Galutinis ("
-              << (std::tolower(skaiciavimas) == 'm' ? "Med.)" : "Vid.)")
+              << (skaiciavimas == 'm' ? "Med.)" : "Vid.)")
               << "\n";
 
     std::cout << "--------------------------------------------\n";
@@ -59,7 +64,7 @@ void rodytiRezultatus(const std::vector<Studentas>& studentai)
     {
         double galutinisBalas;
 
-        if (std::tolower(skaiciavimas) == 'v')
+        if (skaiciavimas == 'v')
             galutinisBalas = galutinis(s, vidurkis(s));
         else
             galutinisBalas = galutinis(s, mediana(s));
@@ -104,8 +109,7 @@ void nuskaitytiFaila(std::vector<Studentas>& studentai, const std::string& failo
   std::ifstream failas(failoVardas);
   if(!failas)
   {
-    std::cout << "Nepavyko atidaryti failo." << std::endl;
-    return;
+      throw std::runtime_error("Nepavyko atidaryti failo " + failoVardas);
   }
 
     std::stringstream buffer;
