@@ -4,10 +4,8 @@
 #include <iomanip>
 #include <iostream>
 #include <string>
-#include <algorithm>
 #include <vector>
 #include <ctime>
-#include <cstdlib>
 
 int main()
 {
