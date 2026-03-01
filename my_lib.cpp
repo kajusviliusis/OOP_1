@@ -124,7 +124,7 @@ void nuskaitytiFaila(std::vector<Studentas>& studentai, const std::string& failo
 
       Studentas s;
       if (!(ss >> s.vardas >> s.pavarde)) {
-          throw std::runtime_error("Blogas formatas faile");
+          throw std::runtime_error("Blogas formatas eiluteje " + eilute);
       }
 
       int pazymys;
@@ -134,7 +134,7 @@ void nuskaitytiFaila(std::vector<Studentas>& studentai, const std::string& failo
       }
 
       if (s.nd.empty()) {
-          throw std::runtime_error("Nera pazymiu studentui " + s.vardas + " " + s.pavarde);
+          throw std::runtime_error("Truksta pazymiu eiluteje " + eilute);
       }
 
       s.egz = s.nd.back();
@@ -214,6 +214,9 @@ void rikiuotiStudentus(std::vector<Studentas>& studentai, int pasirinkimas) {
 
 void nuskaitytiFailaTestavimui(std::vector<Studentas>& studentai, int kartai)
 {
+    if (kartai <= 0) {
+        throw std::invalid_argument("Kartai turi buti > 0");
+    }
     std::string failoVardas;
     std::cout << "Koki faila naudoti testavimui?" << std::endl;
     std::cin >> failoVardas;
@@ -225,8 +228,7 @@ void nuskaitytiFailaTestavimui(std::vector<Studentas>& studentai, int kartai)
         std::ifstream failas(failoVardas);
         if(!failas)
         {
-            std::cout << "Nepavyko atidaryti failo." << std::endl;
-            return;
+            throw std::runtime_error("Nepavyko atidaryti failo " + failoVardas);
         }
 
         studentai.clear();
@@ -241,24 +243,35 @@ void nuskaitytiFailaTestavimui(std::vector<Studentas>& studentai, int kartai)
 
         while (std::getline(buffer,eilute))
         {
-            std::stringstream ss(eilute);
+            try {
+                std::stringstream ss(eilute);
 
-            Studentas s;
-            ss >> s.vardas >> s.pavarde;
+                Studentas s;
+                if (!(ss >> s.vardas >> s.pavarde)) {
+                    throw std::runtime_error("Blogas formatas eiluteje " + eilute);
+                }
 
-            int pazymys;
-            while(ss >> pazymys)
-            {
-                s.nd.push_back(pazymys);
+                int pazymys;
+                while(ss >> pazymys)
+                {
+                    s.nd.push_back(pazymys);
+                }
+
+                if (s.nd.empty()) {
+                    throw std::runtime_error("Truksta pazymiu eiluteje " + eilute);
+                }
+
+                s.egz = s.nd.back();
+                s.nd.pop_back();
+
+                s.galVid = galutinis(s, vidurkis(s));
+                s.galMed = galutinis(s, mediana(s));
+
+                studentai.push_back(s);
             }
-
-            s.egz = s.nd.back();
-            s.nd.pop_back();
-
-            s.galVid = galutinis(s, vidurkis(s));
-            s.galMed = galutinis(s, mediana(s));
-
-            studentai.push_back(s);
+            catch (const std::exception& e) {
+                std::cerr << e.what() << std::endl;
+            }
         }
         auto end = high_resolution_clock::now();
         duration<double> durationSec = end - start;
