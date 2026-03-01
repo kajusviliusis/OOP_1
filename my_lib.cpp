@@ -208,7 +208,7 @@ void rikiuotiStudentus(std::vector<Studentas>& studentai, int pasirinkimas) {
             std::sort(studentai.begin(), studentai.end(), rikiuotiPagalGalutiniMed);
             break;
         default:
-            std::cout << "Neteisingas pasirinkimas" << std::endl;
+            throw std::out_of_range("Pasirinkimas turi buti 1-4");
     }
 }
 
