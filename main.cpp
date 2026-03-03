@@ -24,12 +24,10 @@ int main()
       std::cout << "4 - Nuskaityti duomenis iš failo" << std::endl;
       std::cout << "5 - Testuoti failu nuskaityma" << std::endl;
       std::cout << "6 - Baigti darbą" << std::endl;
-      if(!(std::cin >> pasirinkimas))
-      {
-        std::cout << "Neteisingas pasirinkimas, bandykite dar kartą" << std::endl;
+      if(!(std::cin >> pasirinkimas)){
         std::cin.clear();
         std::cin.ignore(10000,'\n');
-        continue;
+        throw std::runtime_error("Neteisingas pasirinkimas, turi būti sveikasis skaičius.");
       }
       switch(pasirinkimas)
       {
@@ -47,31 +45,41 @@ int main()
             std::cin >> s.pavarde;
             while(true)
             {
-              std::cout << "Įveskite egzamino rezultatą (1-10)" << std::endl;
-              if(std::cin >> s.egz && s.egz >=1 && s.egz <= 10) break;
-
-              std::cout << "Klaida, bandykite dar kartą" << std::endl;
-              std::cin.clear();
-              std::cin.ignore(10000,'\n');
+              try {
+                std::cout << "Įveskite egzamino rezultatą (1-10)" << std::endl;
+                if(!(std::cin >> s.egz)){
+                  std::cin.clear();
+                  std::cin.ignore(10000,'\n');
+                  throw std::runtime_error("Įvestas ne sveikasis skaičius.");
+                }
+                if(s.egz <1 || s.egz > 10){
+                  throw std::runtime_error("Rezultatas turi būti tarp 1 ir 10.");
+                }
+                break;
+              } catch (const std::runtime_error& e) {
+                std::cerr << "Klaida: " << e.what() << " Bandykite dar kartą." << std::endl;
+              }
             }
             std::cout << "Įveskite namų darbų tarpinius rezultatus (1-10), (0 - baigti)" << std::endl;
             int pazymys;
             while (true) {
-              if(!(std::cin >> pazymys))
-              {
-                std::cout << "Klaida, bandykite dar kartą" << std::endl;
-                std::cin.clear();
-                std::cin.ignore(10000,'\n');
-                continue;
-              }
-              if(pazymys==0) break;
+              try {
+                if(!(std::cin >> pazymys))
+                {
+                  std::cin.clear();
+                  std::cin.ignore(10000,'\n');
+                  throw std::runtime_error("Įvestas ne sveikasis skaičius.");
+                }
+                if(pazymys==0) break;
 
-              while(pazymys < 1 || pazymys>10){
-                std::cout << "Įveskite dar kartą. Rezultatas turi būti tarp 1-10." << std::endl;
-                std::cin >> pazymys;
-              }
+                if(pazymys < 1 || pazymys>10){
+                  throw std::runtime_error("Rezultatas turi būti tarp 1 ir 10.");
+                }
 
-              s.nd.push_back(pazymys);
+                s.nd.push_back(pazymys);
+              } catch (const std::runtime_error& e) {
+                std::cerr << "Klaida: " << e.what() << " Bandykite dar kartą." << std::endl;
+              }
             }
 
             studentai.push_back(s);
@@ -117,18 +125,20 @@ int main()
             std::cout << "Pasirinkite rikiavimo buda:" << std::endl;
             std::cout << "Rikiuoti pagal Varda(1), Pavarde(2), Vidurki(3), Mediana(4)" << std::endl;
 
-            if (!(std::cin >> rikPasirinkimas)) {
-              std::cout << "Klaida, iveskite skaiciu\n";
-              std::cin.clear();
-              std::cin.ignore(10000,'\n');
-              continue;
+            try {
+              if (!(std::cin >> rikPasirinkimas)) {
+                std::cin.clear();
+                std::cin.ignore(10000,'\n');
+                throw std::runtime_error("Neteisinga įvestis, turi būti skaičius.");
+              }
+              if (rikPasirinkimas < 1 || rikPasirinkimas > 4) {
+                throw std::out_of_range("Pasirinkimas turi būti 1-4.");
+              }
+              rikiuotiStudentus(studentai, rikPasirinkimas);
+              break;
+            } catch (const std::exception& e) {
+              std::cerr << "Klaida: " << e.what() << " Bandykite dar kartą." << std::endl;
             }
-            if (rikPasirinkimas < 1 || rikPasirinkimas > 4) {
-              std::cout << "Klaida, pasirinkimas turi buti 1-4\n";
-              continue;
-            }
-            rikiuotiStudentus(studentai, rikPasirinkimas);
-            break;
           }
 
           rodytiRez(studentai);
@@ -139,13 +149,22 @@ int main()
           std::cout << "-----------------------------" << std::endl;
 
           int kartai;
-          std::cout << "Kiek kartu norit nuskaityti faila?" << std::endl;
-          while (!(std::cin >> kartai)) {
-            std::cout << "Klaida, iveskite skaiciu" << std::endl;
-            std::cin.clear();
-            std::cin.ignore(10000,'\n');
+          while (true) {
+            try {
+              std::cout << "Kiek kartu norit nuskaityti faila?" << std::endl;
+              if (!(std::cin >> kartai)) {
+                std::cin.clear();
+                std::cin.ignore(10000,'\n');
+                throw std::runtime_error("Neteisinga įvestis, turi būti skaičius.");
+              }
+              if (kartai <= 0) {
+                throw std::out_of_range("Skaičius turi būti didesnis už 0.");
+              }
+              break;
+            } catch (const std::exception& e) {
+              std::cerr << "Klaida: " << e.what() << " Bandykite dar kartą." << std::endl;
+            }
           }
-
           nuskaitytiFailaTestavimui(studentai, kartai);
           break;
 

@@ -49,11 +49,17 @@ void rodytiRezultatus(const std::vector<Studentas>& studentai)
         std::cout << "Ar skaičiuoti pagal vidurkį ar medianą? (v arba m)\n";
         std::cin >> skaiciavimas;
 
-        skaiciavimas = std::tolower(skaiciavimas);
-        if (skaiciavimas == 'v' || skaiciavimas == 'm') break;
-        std::cout << "Neteisingas pasirinkimas. Bandykite dar karta\n";
-        std::cin.clear();
-        std::cin.ignore(10000,'\n');
+        try {
+            skaiciavimas = std::tolower(skaiciavimas);
+            if (skaiciavimas != 'v' && skaiciavimas != 'm') {
+                throw std::runtime_error("Neteisingas pasirinkimas, įveskite 'v' arba 'm'.");
+            }
+            break;
+        } catch (const std::runtime_error& e) {
+            std::cerr << "Klaida: " << e.what() << " Bandykite dar kartą." << std::endl;
+            std::cin.clear();
+            std::cin.ignore(10000,'\n');
+        }
     }
     std::cout << std::left << std::setw(10) << "Vardas"
               << std::setw(15) << "Pavardė"
@@ -165,11 +171,19 @@ void rodytiRez(const std::vector<Studentas>& studentai)
     int pasirinkimas;
     while (true) {
         std::cout << "Kur norite matyti rezultatus? ekrane(1), faile(2)" << std::endl;
-        if (std::cin >> pasirinkimas && (pasirinkimas == 1 || pasirinkimas == 2) ) break;
-
-        std::cout << "Klaida, iveskite 1 arba 2.\n";
-        std::cin.clear();
-        std::cin.ignore(10000,'\n');
+        try {
+            if (!(std::cin >> pasirinkimas)) {
+                std::cin.clear();
+                std::cin.ignore(10000,'\n');
+                throw std::runtime_error("Neteisinga įvestis, turi būti skaičius.");
+            }
+            if (pasirinkimas != 1 && pasirinkimas != 2) {
+                throw std::out_of_range("Pasirinkimas turi būti 1 arba 2.");
+            }
+            break;
+        } catch (const std::exception& e) {
+            std::cerr << "Klaida: " << e.what() << " Bandykite dar kartą." << std::endl;
+        }
     }
     if(pasirinkimas == 1) {
         std::cout << buffer.str();
