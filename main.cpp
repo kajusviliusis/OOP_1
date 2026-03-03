@@ -140,7 +140,11 @@ int main()
 
           int kartai;
           std::cout << "Kiek kartu norit nuskaityti faila?" << std::endl;
-          std::cin >> kartai;
+          while (!(std::cin >> kartai)) {
+            std::cout << "Klaida, iveskite skaiciu" << std::endl;
+            std::cin.clear();
+            std::cin.ignore(10000,'\n');
+          }
 
           nuskaitytiFailaTestavimui(studentai, kartai);
           break;
