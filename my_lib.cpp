@@ -44,14 +44,17 @@ double galutinis(const Studentas& A, double medVid)
 void rodytiRezultatus(const std::vector<Studentas>& studentai)
 {
     char skaiciavimas;
-    std::cout << "Ar skaičiuoti pagal vidurkį ar medianą? (v arba m)\n";
-    std::cin >> skaiciavimas;
 
-    skaiciavimas = std::tolower(skaiciavimas);
-    if (skaiciavimas != 'v' && skaiciavimas != 'm') {
-        throw std::invalid_argument("Neteisingas pasirinkimas, galima ivesti tik 'v' arba 'm' ");
+    while (true) {
+        std::cout << "Ar skaičiuoti pagal vidurkį ar medianą? (v arba m)\n";
+        std::cin >> skaiciavimas;
+
+        skaiciavimas = std::tolower(skaiciavimas);
+        if (skaiciavimas == 'v' || skaiciavimas == 'm') break;
+        std::cout << "Neteisingas pasirinkimas. Bandykite dar karta" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(10000,'\n');
     }
-
     std::cout << std::left << std::setw(10) << "Vardas"
               << std::setw(15) << "Pavardė"
               << "Galutinis ("
