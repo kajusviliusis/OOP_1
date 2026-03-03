@@ -112,10 +112,23 @@ int main()
         nuskaitytiFaila(studentai, failoVardas);
 
         int rikPasirinkimas;
-        std::cout << "Pasirinkite rikiavimo buda:" << std::endl;
-        std::cout << "Rikiuoti pagal Varda(1), Pavarde(2), Vidurki(3), Mediana(4)" << std::endl;
-        std::cin >> rikPasirinkimas;
-        rikiuotiStudentus(studentai, rikPasirinkimas);
+        while (true) {
+          std::cout << "Pasirinkite rikiavimo buda:" << std::endl;
+          std::cout << "Rikiuoti pagal Varda(1), Pavarde(2), Vidurki(3), Mediana(4)" << std::endl;
+
+          if (!(std::cin >> rikPasirinkimas)) {
+            std::cout << "Klaida, iveskite skaiciu\n";
+            std::cin.clear();
+            std::cin.ignore(10000,'\n');
+            continue;
+          }
+          if (rikPasirinkimas < 1 || rikPasirinkimas > 4) {
+            std::cout << "Klaida, pasirinkimas turi buti 1-4\n";
+            continue;
+          }
+          rikiuotiStudentus(studentai, rikPasirinkimas);
+          break;
+        }
 
         rodytiRez(studentai);
         break;

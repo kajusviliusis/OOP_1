@@ -51,7 +51,7 @@ void rodytiRezultatus(const std::vector<Studentas>& studentai)
 
         skaiciavimas = std::tolower(skaiciavimas);
         if (skaiciavimas == 'v' || skaiciavimas == 'm') break;
-        std::cout << "Neteisingas pasirinkimas. Bandykite dar karta" << std::endl;
+        std::cout << "Neteisingas pasirinkimas. Bandykite dar karta\n";
         std::cin.clear();
         std::cin.ignore(10000,'\n');
     }
@@ -163,11 +163,13 @@ void rodytiRez(const std::vector<Studentas>& studentai)
     }
 
     int pasirinkimas;
-    std::cout << "Kur norite matyti rezultatus? ekrane(1), faile(2)" << std::endl;
-    if (!(std::cin >> pasirinkimas)) {
+    while (true) {
+        std::cout << "Kur norite matyti rezultatus? ekrane(1), faile(2)" << std::endl;
+        if (std::cin >> pasirinkimas && (pasirinkimas == 1 || pasirinkimas == 2) ) break;
+
+        std::cout << "Klaida, iveskite 1 arba 2.\n";
         std::cin.clear();
         std::cin.ignore(10000,'\n');
-        throw std::runtime_error("Rezultatu rodymo pasirinkime ivedamas ne skaicius");
     }
     if(pasirinkimas == 1) {
         std::cout << buffer.str();
@@ -177,9 +179,6 @@ void rodytiRez(const std::vector<Studentas>& studentai)
         if (!failas) throw std::runtime_error("Nepavyko sukurti failo");
         failas << buffer.str();
         failas.close();
-    }
-    else if (pasirinkimas != 1 && pasirinkimas != 2) {
-        throw std::out_of_range("Pasirinkimas turi buti 1 arba 2");
     }
 }
 
