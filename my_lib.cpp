@@ -285,3 +285,34 @@ void nuskaitytiFailaTestavimui(std::vector<Studentas>& studentai, int kartai)
     std::cout << "Vidutinis failo nuskaitymo laikas po " << kartai << " testu: " << average << " s" << std::endl;
 }
 
+void generuotiFaila(int studentuSk) {
+    int pazymiuKiekis = 15;
+    std::string failoVardas = "generuotiStud" + std::to_string(studentuSk) + ".txt";
+    std::ofstream failas(failoVardas);
+
+    failas << std::left << std::setw(20) << "Vardas" << std::setw(20) << "Pavardė";
+    for (int i=1; i<=pazymiuKiekis; i++) {
+        failas << std::setw(20) << "ND" + std::to_string(i);
+    }
+    failas << std::setw(20) << "Egz" << '\n';
+
+    for (int i=1; i<=studentuSk; i++) {
+        Studentas s;
+        s.vardas = "Vardas" + std::to_string(i);
+        s.pavarde = "Pavarde" + std::to_string(i);
+
+        for (int j=0; j<pazymiuKiekis; j++) {
+            int pazymys = rand() % 10 + 1;
+            s.nd.push_back(pazymys);
+        }
+        s.egz = rand() % 10 + 1;
+
+        failas << std::left << std::setw(20) << s.vardas << std::setw(20) << s.pavarde;
+        for (int paz : s.nd) {
+            failas << std::setw(20) << paz;
+        }
+        failas << std::setw(20) << s.egz << '\n';
+
+    }
+    failas.close();
+}

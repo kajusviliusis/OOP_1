@@ -28,6 +28,7 @@ bool rikiuotiPagalGalutiniVid(const Studentas& A, const Studentas& B);
 bool rikiuotiPagalGalutiniMed(const Studentas& A, const Studentas& B);
 void rikiuotiStudentus(std::vector<Studentas>& studentai, int pasirinkimas);
 void nuskaitytiFailaTestavimui(std::vector<Studentas>& studentai, int kartai);
+void generuotiFaila(int studentuSk);
 
 
 #endif
