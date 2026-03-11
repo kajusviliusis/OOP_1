@@ -317,26 +317,26 @@ void paskirstytiStudentus(const std::vector<Studentas>& studentai, int rikiavima
         } else {
             vargsai.push_back(s);
         }
-
-        rikiuotiStudentus(vargsai, rikiavimas);
-        rikiuotiStudentus(kieti, rikiavimas);
-
-        std::ofstream failasVargsai("vargsai.txt");
-        std::ofstream failasKieti("kieti.txt");
-
-        failasVargsai << std::left << std::setw(20) << "Vardas" << std::setw(20) << "Pavardė" << std::setw(20) << "Galutinis (Vid.)" << std::setw(20) << "Galutinis (Med.)" << '\n';
-        for (const Studentas& s : vargsai) {
-            failasVargsai << std::left << std::setw(20) << s.vardas << std::setw(20) << s.pavarde << std::setw(20) << std::fixed << std::setprecision(2) << s.galVid << std::setw(20) << std::fixed << std::setprecision(2) << s.galMed << '\n';
-        }
-
-        failasKieti << std::left << std::setw(20) << "Vardas" << std::setw(20) << "Pavardė" << std::setw(20) << "Galutinis (Vid.)" << std::setw(20) << "Galutinis (Med.)" << '\n';
-        for (const Studentas& s : kieti) {
-            failasKieti << std::left << std::setw(20) << s.vardas << std::setw(20) << s.pavarde << std::setw(20) << std::fixed << std::setprecision(2) << s.galVid << std::setw(20) << std::fixed << std::setprecision(2) << s.galMed << '\n';
-        }
-
-        failasVargsai.close();
-        failasKieti.close();
     }
+
+    rikiuotiStudentus(vargsai, rikiavimas);
+    rikiuotiStudentus(kieti, rikiavimas);
+
+    std::ofstream failasVargsai("vargsai.txt");
+    std::ofstream failasKieti("kieti.txt");
+
+    failasVargsai << std::left << std::setw(20) << "Vardas" << std::setw(20) << "Pavardė" << std::setw(20) << "Galutinis (Vid.)" << std::setw(20) << "Galutinis (Med.)" << '\n';
+    for (const Studentas& s : vargsai) {
+        failasVargsai << std::left << std::setw(20) << s.vardas << std::setw(20) << s.pavarde << std::setw(20) << std::fixed << std::setprecision(2) << s.galVid << std::setw(20) << std::fixed << std::setprecision(2) << s.galMed << '\n';
+    }
+
+    failasKieti << std::left << std::setw(20) << "Vardas" << std::setw(20) << "Pavardė" << std::setw(20) << "Galutinis (Vid.)" << std::setw(20) << "Galutinis (Med.)" << '\n';
+    for (const Studentas& s : kieti) {
+        failasKieti << std::left << std::setw(20) << s.vardas << std::setw(20) << s.pavarde << std::setw(20) << std::fixed << std::setprecision(2) << s.galVid << std::setw(20) << std::fixed << std::setprecision(2) << s.galMed << '\n';
+    }
+
+    failasVargsai.close();
+    failasKieti.close();
 }
 
 void atliktiPirmaTyrima() {
