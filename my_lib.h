@@ -29,8 +29,11 @@ bool rikiuotiPagalGalutiniMed(const Studentas& A, const Studentas& B);
 void rikiuotiStudentus(std::vector<Studentas>& studentai, int pasirinkimas);
 void nuskaitytiFailaTestavimui(std::vector<Studentas>& studentai, int kartai);
 void generuotiFaila(int studentuSk);
-void paskirstytiStudentus(const std::vector<Studentas>& studentai, int rikiavimas);
+void paskirstytiStudentus(const std::vector<Studentas>& studentai, int rikiavimas, std::vector<Studentas>& vargsai,
+            std::vector<Studentas>& kieti);
+void isvestiDuFailus(const std::vector<Studentas>& vargsai, const std::vector<Studentas>& kieti);
 void atliktiPirmaTyrima();
+void atliktiAntraTyrima();
 
 
 #endif

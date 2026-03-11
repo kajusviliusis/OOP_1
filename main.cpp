@@ -14,6 +14,8 @@ int main()
   bool testi=true;
   srand(time(nullptr));
   std::string failoVardas;
+  std::vector<Studentas> vargsai;
+  std::vector<Studentas> kieti;
 
   while(testi){
     try {
@@ -26,7 +28,8 @@ int main()
       std::cout << "6 - Generuoti studentu faila" << std::endl;
       std::cout << "7 - Paskirstyti studentus i grupes (kieti, vargsai)" << std::endl;
       std::cout << "8 - Atlikti pirma tyrima (failu kurimas, uzdarymas)" << std::endl;
-      std::cout << "9 - Baigti darbą" << std::endl;
+      std::cout << "9 - Atlikti antra tyrima (nuskaitymas, rusiavimas i grupes, isvedimas i 2 failus)" << std::endl;
+      std::cout << "10 - Baigti darbą" << std::endl;
       if(!(std::cin >> pasirinkimas))
       {
         std::cout << "Neteisingas pasirinkimas, bandykite dar kartą" << std::endl;
@@ -177,7 +180,8 @@ int main()
               std::cin.clear();
               std::cin.ignore(10000,'\n');
           }
-          paskirstytiStudentus(studentai, pasirinkimas);
+          paskirstytiStudentus(studentai, pasirinkimas, vargsai, kieti);
+          isvestiDuFailus(vargsai, kieti);
           break;
 
         case 8:
@@ -186,6 +190,11 @@ int main()
           break;
 
         case 9:
+          std::cout << "Pasirinkai atlikti antra tyrima" << std::endl;
+          atliktiAntraTyrima();
+          break;
+
+        case 10:
           std::cout << "Programa baigta" << std::endl;
           testi = false;
           break;
