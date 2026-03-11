@@ -307,9 +307,8 @@ void generuotiFaila(int studentuSk) {
     failas.close();
 }
 
-void paskirstytiStudentus(const std::vector<Studentas>& studentai, int rikiavimas) {
-    std::vector<Studentas> vargsai;
-    std::vector<Studentas> kieti;
+void paskirstytiStudentus(const std::vector<Studentas>& studentai, int rikiavimas, std::vector<Studentas>& vargsai,
+            std::vector<Studentas>& kieti) {
 
     for (const Studentas& s : studentai) {
         if (s.galVid >= 5.0) {
@@ -321,6 +320,9 @@ void paskirstytiStudentus(const std::vector<Studentas>& studentai, int rikiavima
 
     rikiuotiStudentus(vargsai, rikiavimas);
     rikiuotiStudentus(kieti, rikiavimas);
+}
+
+void isvestiDuFailus(const std::vector<Studentas>& vargsai, const std::vector<Studentas>& kieti) {
 
     std::ofstream failasVargsai("vargsai.txt");
     std::ofstream failasKieti("kieti.txt");
