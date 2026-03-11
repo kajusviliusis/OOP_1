@@ -24,7 +24,8 @@ int main()
       std::cout << "4 - Nuskaityti duomenis iš failo" << std::endl;
       std::cout << "5 - Testuoti failu nuskaityma" << std::endl;
       std::cout << "6 - Generuoti studentu faila" << std::endl;
-      std::cout << "7 - Baigti darbą" << std::endl;
+      std::cout << "7 - Paskirstyti studentus i grupes (kieti, vargsai)" << std::endl;
+      std::cout << "8 - Baigti darbą" << std::endl;
       if(!(std::cin >> pasirinkimas))
       {
         std::cout << "Neteisingas pasirinkimas, bandykite dar kartą" << std::endl;
@@ -160,6 +161,25 @@ int main()
           break;
 
         case 7:
+          std::cout << "Pasirinkai paskirstyti studentus i grupes" << std::endl;
+          std::cout << "-----------------------------" << std::endl;
+          std::cout << "Pasirinkite rikiavimo buda:" << std::endl;
+
+          int pasirinkimas;
+          while (true) {
+              std::cout << "Rikiuoti pagal: Varda(1), Pavarde(2), Vidurki(3), Mediana(4)\n";
+
+              if (std::cin >> pasirinkimas && pasirinkimas >= 1 && pasirinkimas <= 4)
+                  break;
+
+              std::cout << "Klaida, iveskite skaiciu 1-4\n";
+              std::cin.clear();
+              std::cin.ignore(10000,'\n');
+          }
+          paskirstytiStudentus(studentai, pasirinkimas);
+          break;
+
+        case 8:
           std::cout << "Programa baigta" << std::endl;
           testi = false;
           break;
