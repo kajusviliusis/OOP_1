@@ -338,3 +338,24 @@ void paskirstytiStudentus(const std::vector<Studentas>& studentai, int rikiavima
         failasKieti.close();
     }
 }
+
+void atliktiPirmaTyrima() {
+    using namespace std::chrono;
+    std::vector<int> kiekiai = {1000, 10000, 100000, 1000000, 10000000};
+
+    std::cout << "----------------------------------------------------------\n";
+    std::cout << std::left << std::setw(20) << "Irasu kiekis" << "Kurimo trukme (s)\n";
+    std::cout << "----------------------------------------------------------\n";
+
+    for (int n : kiekiai) {
+        auto start = high_resolution_clock::now();
+
+        generuotiFaila(n);
+
+        auto end = high_resolution_clock::now();
+        duration<double> diff = end - start;
+
+        std::cout << std::left << std::setw(20) << n << std::fixed << std::setprecision(5) << diff.count() << " s\n";
+    }
+    std::cout << "----------------------------------------------------------\n";
+}
