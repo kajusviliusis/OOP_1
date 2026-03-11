@@ -371,7 +371,7 @@ void atliktiAntraTyrima() {
     std::cout << std::left << std::setw(10) << "Irasai"
               << std::setw(12) << "Skaitymas"
               << std::setw(12) << "Skirstymas"
-              << std::setw(12) << "Rasymas"
+              << std::setw(12) << "Irasymas"
               << "Viso\n";
     std::cout << "-----------------------------------------------------------------------------\n";
 
