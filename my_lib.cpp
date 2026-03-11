@@ -297,22 +297,12 @@ void generuotiFaila(int studentuSk) {
     failas << std::setw(20) << "Egz" << '\n';
 
     for (int i=1; i<=studentuSk; i++) {
-        Studentas s;
-        s.vardas = "Vardas" + std::to_string(i);
-        s.pavarde = "Pavarde" + std::to_string(i);
+       failas << std::left << std::setw(20) << ("Vardas" + std::to_string(i)) << std::setw(20) << ("Pavarde" + std::to_string(i));
 
-        for (int j=0; j<pazymiuKiekis; j++) {
-            int pazymys = rand() % 10 + 1;
-            s.nd.push_back(pazymys);
+       for (int j = 0; j < pazymiuKiekis; j++) {
+            failas << std::setw(20) << (rand() % 10 + 1);
         }
-        s.egz = rand() % 10 + 1;
-
-        failas << std::left << std::setw(20) << s.vardas << std::setw(20) << s.pavarde;
-        for (int paz : s.nd) {
-            failas << std::setw(20) << paz;
-        }
-        failas << std::setw(20) << s.egz << '\n';
-
+        failas << std::setw(20) << (rand() % 10 + 1) << '\n';
     }
     failas.close();
 }
