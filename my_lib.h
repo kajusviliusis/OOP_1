@@ -36,8 +36,6 @@ bool rikiuotiPagalGalutiniVid(const Studentas& A, const Studentas& B);
 bool rikiuotiPagalGalutiniMed(const Studentas& A, const Studentas& B);
 void nuskaitytiFailaTestavimui(std::vector<Studentas>& studentai, int kartai);
 void generuotiFaila(int studentuSk);
-void paskirstytiStudentus(const std::vector<Studentas>& studentai, int rikiavimas, std::vector<Studentas>& vargsai,
-            std::vector<Studentas>& kieti);
 void isvestiDuFailus(const std::vector<Studentas>& vargsai, const std::vector<Studentas>& kieti);
 void atliktiPirmaTyrima();
 void atliktiAntraTyrima();
@@ -85,8 +83,8 @@ void nuskaitytiFaila(Konteineris& studentai, const std::string& failoVardas)
     }
 }
 
-template <typename Container>
-void rikiuotiStudentus(Container& studentai, int pasirinkimas)
+template <typename Konteineris>
+void rikiuotiStudentus(Konteineris& studentai, int pasirinkimas)
 {
     if (pasirinkimas < 1 || pasirinkimas > 4) {
         throw std::out_of_range("Pasirinkimas turi buti 1-4");
@@ -94,20 +92,93 @@ void rikiuotiStudentus(Container& studentai, int pasirinkimas)
 
     if (pasirinkimas == 1) {
         // perziuri kompiliavimo metu, kad butu kompiliuojamas tik reikalingas rikiavimas, ziuredamas i template type
-        if constexpr (std::is_same<Container, std::list<Studentas> >::value) studentai.sort(rikiuotiVarda);
+        if constexpr (std::is_same<Konteineris, std::list<Studentas> >::value) studentai.sort(rikiuotiVarda);
         else std::sort(studentai.begin(), studentai.end(), rikiuotiVarda);
     } else if (pasirinkimas == 2) {
-        if constexpr (std::is_same<Container, std::list<Studentas> >::value) studentai.sort(rikiuotiPavarde);
+        if constexpr (std::is_same<Konteineris, std::list<Studentas> >::value) studentai.sort(rikiuotiPavarde);
         else std::sort(studentai.begin(), studentai.end(), rikiuotiPavarde);
     } else if (pasirinkimas == 3) {
-        if constexpr (std::is_same<Container, std::list<Studentas> >::value) studentai.sort(rikiuotiPagalGalutiniVid);
+        if constexpr (std::is_same<Konteineris, std::list<Studentas> >::value) studentai.sort(rikiuotiPagalGalutiniVid);
         else std::sort(studentai.begin(), studentai.end(), rikiuotiPagalGalutiniVid);
     } else {
-        if constexpr (std::is_same<Container, std::list<Studentas> >::value) studentai.sort(rikiuotiPagalGalutiniMed);
+        if constexpr (std::is_same<Konteineris, std::list<Studentas> >::value) studentai.sort(rikiuotiPagalGalutiniMed);
         else std::sort(studentai.begin(), studentai.end(), rikiuotiPagalGalutiniMed);
     }
 }
 
+template <typename Konteineris>
+void paskirstytiStudentus(const Konteineris& studentai, Konteineris& vargsai,
+            Konteineris& kieti) {
+
+    for (const auto& s : studentai) {
+        if (s.galVid >= 5.0) {
+            kieti.push_back(s);
+        } else {
+            vargsai.push_back(s);
+        }
+    }
+}
+
+template <typename Konteineris>
+void atliktiAntraTyrima() {
+    using namespace std::chrono;
+    std::vector<int> kiekiai = {1000, 10000, 100000, 1000000, 10000000};
+    int rikiavimas = 3;
+
+    std::cout << "-----------------------------------------------------------------------------\n";
+    std::cout << std::left << std::setw(10) << "Irasai"
+              << std::setw(12) << "Skaitymas"
+              << std::setw(12) << "Skirstymas"
+              << std::setw(12) << "Irasymas"
+              << "Viso\n";
+    std::cout << "-----------------------------------------------------------------------------\n";
+
+    for (int n : kiekiai) {
+        Konteineris studentai;
+        Konteineris vargsai;
+        Konteineris kieti;
+        std::string failoVardas = "generuotiStud" + std::to_string(n) + ".txt";
+
+        auto visoPradzia = high_resolution_clock::now();
+
+        // 1 skaitymas
+        auto s1 = high_resolution_clock::now();
+        try {
+            nuskaitytiFaila(studentai, failoVardas);
+        } catch (const std::exception& e) {
+            std::cerr << "Klaida: Nepavyko rasti " << failoVardas << "\n";
+            continue;
+        }
+        auto e1 = high_resolution_clock::now();
+
+        // 2 rikiavimas didejimo tvarka
+        auto s2 = high_resolution_clock::now();
+        rikiuotiStudentus(studentai, rikiavimas);
+        auto e2 = high_resolution_clock::now();
+
+        // 3 skirstymas
+        auto s3 = high_resolution_clock::now();
+        paskirstytiStudentus(studentai, vargsai, kieti);
+        auto e3 = high_resolution_clock::now();
+
+        auto visoPabaiga = high_resolution_clock::now();
+
+        double trukme1 = duration<double>(e1 - s1).count();
+        double trukme2 = duration<double>(e2 - s2).count();
+        double trukmeViso = duration<double>(visoPabaiga - visoPradzia).count();
+
+        std::cout << std::left << std::setw(10) << n
+                  << std::fixed << std::setprecision(4)
+                  << std::setw(12) << trukme1
+                  << std::setw(12) << trukme2
+                  << trukmeViso << " s\n";
+
+        studentai.clear();
+        vargsai.clear();
+        kieti.clear();
+    }
+    std::cout << "-----------------------------------------------------------------------------\n";
+}
 
 
 #endif

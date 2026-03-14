@@ -243,21 +243,6 @@ void generuotiFaila(int studentuSk) {
     failas.close();
 }
 
-void paskirstytiStudentus(const std::vector<Studentas>& studentai, int rikiavimas, std::vector<Studentas>& vargsai,
-            std::vector<Studentas>& kieti) {
-
-    for (const Studentas& s : studentai) {
-        if (s.galVid >= 5.0) {
-            kieti.push_back(s);
-        } else {
-            vargsai.push_back(s);
-        }
-    }
-
-    rikiuotiStudentus(vargsai, rikiavimas);
-    rikiuotiStudentus(kieti, rikiavimas);
-}
-
 void isvestiDuFailus(const std::vector<Studentas>& vargsai, const std::vector<Studentas>& kieti) {
 
     std::ofstream failasVargsai("vargsai.txt");
@@ -296,66 +281,4 @@ void atliktiPirmaTyrima() {
         std::cout << std::left << std::setw(20) << n << std::fixed << std::setprecision(5) << trukme.count() << " s\n";
     }
     std::cout << "----------------------------------------------------------\n";
-}
-
-void atliktiAntraTyrima() {
-    using namespace std::chrono;
-    std::vector<int> kiekiai = {1000, 10000, 100000, 1000000, 10000000};
-    int rikiavimas = 3;
-
-    std::cout << "-----------------------------------------------------------------------------\n";
-    std::cout << std::left << std::setw(10) << "Irasai"
-              << std::setw(12) << "Skaitymas"
-              << std::setw(12) << "Skirstymas"
-              << std::setw(12) << "Irasymas"
-              << "Viso\n";
-    std::cout << "-----------------------------------------------------------------------------\n";
-
-    for (int n : kiekiai) {
-        std::vector<Studentas> studentai;
-        std::vector<Studentas> vargsai;
-        std::vector<Studentas> kieti;
-        std::string failoVardas = "generuotiStud" + std::to_string(n) + ".txt";
-
-        auto visoPradzia = high_resolution_clock::now();
-
-        // 1 skaitymas
-        auto s1 = high_resolution_clock::now();
-        try {
-            nuskaitytiFaila(studentai, failoVardas);
-        } catch (const std::exception& e) {
-            std::cerr << "Klaida: Nepavyko rasti " << failoVardas << "\n";
-            continue;
-        }
-        auto e1 = high_resolution_clock::now();
-
-        // 2 skirstymas ir rusiavimas
-        auto s2 = high_resolution_clock::now();
-        paskirstytiStudentus(studentai, rikiavimas, vargsai, kieti);
-        auto e2 = high_resolution_clock::now();
-
-        // 3 suskirstytu isvedimas i du failus
-        auto s3 = high_resolution_clock::now();
-        isvestiDuFailus(vargsai, kieti);
-        auto e3 = high_resolution_clock::now();
-
-        auto visoPabaiga = high_resolution_clock::now();
-
-        double trukme1 = duration<double>(e1 - s1).count();
-        double trukme2 = duration<double>(e2 - s2).count();
-        double trukme3 = duration<double>(e3 - s3).count();
-        double trukmeViso = duration<double>(visoPabaiga - visoPradzia).count();
-
-        std::cout << std::left << std::setw(10) << n
-                  << std::fixed << std::setprecision(4)
-                  << std::setw(12) << trukme1
-                  << std::setw(12) << trukme2
-                  << std::setw(12) << trukme3
-                  << trukmeViso << " s\n";
-
-        studentai.clear(); studentai.shrink_to_fit();
-        vargsai.clear(); vargsai.shrink_to_fit();
-        kieti.clear(); kieti.shrink_to_fit();
-    }
-    std::cout << "-----------------------------------------------------------------------------\n";
 }

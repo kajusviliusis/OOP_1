@@ -167,20 +167,8 @@ int main()
         case 7:
           std::cout << "Pasirinkai paskirstyti studentus i grupes" << std::endl;
           std::cout << "-----------------------------" << std::endl;
-          std::cout << "Pasirinkite rikiavimo buda:" << std::endl;
 
-          int pasirinkimas;
-          while (true) {
-              std::cout << "Rikiuoti pagal: Varda(1), Pavarde(2), Vidurki(3), Mediana(4)\n";
-
-              if (std::cin >> pasirinkimas && pasirinkimas >= 1 && pasirinkimas <= 4)
-                  break;
-
-              std::cout << "Klaida, iveskite skaiciu 1-4\n";
-              std::cin.clear();
-              std::cin.ignore(10000,'\n');
-          }
-          paskirstytiStudentus(studentai, pasirinkimas, vargsai, kieti);
+          paskirstytiStudentus(studentai, vargsai, kieti);
           isvestiDuFailus(vargsai, kieti);
           break;
 
@@ -191,7 +179,7 @@ int main()
 
         case 9:
           std::cout << "Pasirinkai atlikti antra tyrima" << std::endl;
-          atliktiAntraTyrima();
+          atliktiAntraTyrima<std::vector<Studentas>>();
           break;
 
         case 10:
