@@ -34,7 +34,6 @@ bool rikiuotiVarda(const Studentas& A, const Studentas& B);
 bool rikiuotiPavarde(const Studentas& A, const Studentas& B);
 bool rikiuotiPagalGalutiniVid(const Studentas& A, const Studentas& B);
 bool rikiuotiPagalGalutiniMed(const Studentas& A, const Studentas& B);
-void rikiuotiStudentus(std::vector<Studentas>& studentai, int pasirinkimas);
 void nuskaitytiFailaTestavimui(std::vector<Studentas>& studentai, int kartai);
 void generuotiFaila(int studentuSk);
 void paskirstytiStudentus(const std::vector<Studentas>& studentai, int rikiavimas, std::vector<Studentas>& vargsai,
@@ -85,6 +84,30 @@ void nuskaitytiFaila(Konteineris& studentai, const std::string& failoVardas)
         studentai.push_back(s);
     }
 }
+
+template <typename Container>
+void rikiuotiStudentus(Container& studentai, int pasirinkimas)
+{
+    if (pasirinkimas < 1 || pasirinkimas > 4) {
+        throw std::out_of_range("Pasirinkimas turi buti 1-4");
+    }
+
+    if (pasirinkimas == 1) {
+        // perziuri kompiliavimo metu, kad butu kompiliuojamas tik reikalingas rikiavimas, ziuredamas i template type
+        if constexpr (std::is_same<Container, std::list<Studentas> >::value) studentai.sort(rikiuotiVarda);
+        else std::sort(studentai.begin(), studentai.end(), rikiuotiVarda);
+    } else if (pasirinkimas == 2) {
+        if constexpr (std::is_same<Container, std::list<Studentas> >::value) studentai.sort(rikiuotiPavarde);
+        else std::sort(studentai.begin(), studentai.end(), rikiuotiPavarde);
+    } else if (pasirinkimas == 3) {
+        if constexpr (std::is_same<Container, std::list<Studentas> >::value) studentai.sort(rikiuotiPagalGalutiniVid);
+        else std::sort(studentai.begin(), studentai.end(), rikiuotiPagalGalutiniVid);
+    } else {
+        if constexpr (std::is_same<Container, std::list<Studentas> >::value) studentai.sort(rikiuotiPagalGalutiniMed);
+        else std::sort(studentai.begin(), studentai.end(), rikiuotiPagalGalutiniMed);
+    }
+}
+
 
 
 #endif

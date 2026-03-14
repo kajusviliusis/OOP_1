@@ -150,25 +150,6 @@ bool rikiuotiPagalGalutiniMed(const Studentas& A, const Studentas& B) {
     return A.galMed < B.galMed;
 }
 
-void rikiuotiStudentus(std::vector<Studentas>& studentai, int pasirinkimas) {
-    switch (pasirinkimas) {
-        case 1:
-            std::sort(studentai.begin(), studentai.end(), rikiuotiVarda);
-            break;
-        case 2:
-            std::sort(studentai.begin(), studentai.end(), rikiuotiPavarde);
-            break;
-        case 3:
-            std::sort(studentai.begin(), studentai.end(), rikiuotiPagalGalutiniVid);
-            break;
-        case 4:
-            std::sort(studentai.begin(), studentai.end(), rikiuotiPagalGalutiniMed);
-            break;
-        default:
-            throw std::out_of_range("Pasirinkimas turi buti 1-4");
-    }
-}
-
 void nuskaitytiFailaTestavimui(std::vector<Studentas>& studentai, int kartai)
 {
     if (kartai <= 0) {
