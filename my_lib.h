@@ -128,8 +128,8 @@ void atliktiAntraTyrima() {
     std::cout << "-----------------------------------------------------------------------------\n";
     std::cout << std::left << std::setw(10) << "Irasai"
               << std::setw(12) << "Skaitymas"
+              << std::setw(12) << "Rikiavimas"
               << std::setw(12) << "Skirstymas"
-              << std::setw(12) << "Irasymas"
               << "Viso\n";
     std::cout << "-----------------------------------------------------------------------------\n";
 
@@ -165,12 +165,14 @@ void atliktiAntraTyrima() {
 
         double trukme1 = duration<double>(e1 - s1).count();
         double trukme2 = duration<double>(e2 - s2).count();
+        double trukme3 = duration<double>(e3 - s3).count();
         double trukmeViso = duration<double>(visoPabaiga - visoPradzia).count();
 
         std::cout << std::left << std::setw(10) << n
                   << std::fixed << std::setprecision(4)
                   << std::setw(12) << trukme1
                   << std::setw(12) << trukme2
+                  << std::setw(12) << trukme3
                   << trukmeViso << " s\n";
 
         studentai.clear();

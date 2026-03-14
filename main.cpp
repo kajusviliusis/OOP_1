@@ -28,7 +28,7 @@ int main()
       std::cout << "6 - Generuoti studentu faila" << std::endl;
       std::cout << "7 - Paskirstyti studentus i grupes (kieti, vargsai)" << std::endl;
       std::cout << "8 - Atlikti pirma tyrima (failu kurimas, uzdarymas)" << std::endl;
-      std::cout << "9 - Atlikti antra tyrima (nuskaitymas, rusiavimas i grupes, isvedimas i 2 failus)" << std::endl;
+      std::cout << "9 - Atlikti antra tyrima (nuskaitymas, rikiavimas, skirstymas, su pasirinktu konteineriu)" << std::endl;
       std::cout << "10 - Baigti darbą" << std::endl;
       if(!(std::cin >> pasirinkimas))
       {
@@ -179,7 +179,22 @@ int main()
 
         case 9:
           std::cout << "Pasirinkai atlikti antra tyrima" << std::endl;
-          atliktiAntraTyrima<std::vector<Studentas>>();
+
+          int tipas;
+          while (true) {
+              std::cout << "Pasirinkite konteineri: vector(1), deque(2), list(3)\n";
+              if (std::cin >> tipas && (tipas >= 1 && tipas <= 3)) break;
+              std::cout << "Klaida, iveskite 1-3\n";
+              std::cin.clear();
+              std::cin.ignore(10000, '\n');
+          }
+          if (tipas == 1) {
+              atliktiAntraTyrima<std::vector<Studentas>>();
+          } else if (tipas == 2) {
+              atliktiAntraTyrima<std::deque<Studentas>>();
+          } else {
+              atliktiAntraTyrima<std::list<Studentas>>();
+          }
           break;
 
         case 10:
