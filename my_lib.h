@@ -3,6 +3,15 @@
 
 #include <string>
 #include <vector>
+#include <deque>
+#include <list>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
+#include <stdexcept>
+#include <iostream>
+#include <iomanip>
+#include <chrono>
 
 struct Studentas {
     std::string vardas;
@@ -20,7 +29,6 @@ double galutinis(const Studentas& A, double medVid);
 void rodytiRezultatus(const std::vector<Studentas>& studentai);
 void generuotiPazymius(Studentas& s);
 void generuotiStudentus(std::vector<Studentas>& studentai);
-void nuskaitytiFaila(std::vector<Studentas>& studentai, const std::string& failoVardas);
 void rodytiRez(const std::vector<Studentas>& studentai);
 bool rikiuotiVarda(const Studentas& A, const Studentas& B);
 bool rikiuotiPavarde(const Studentas& A, const Studentas& B);
@@ -34,6 +42,49 @@ void paskirstytiStudentus(const std::vector<Studentas>& studentai, int rikiavima
 void isvestiDuFailus(const std::vector<Studentas>& vargsai, const std::vector<Studentas>& kieti);
 void atliktiPirmaTyrima();
 void atliktiAntraTyrima();
+
+// templates
+
+template <typename Konteineris>
+void nuskaitytiFaila(Konteineris& studentai, const std::string& failoVardas)
+{
+    std::ifstream failas(failoVardas);
+    if (!failas) {
+        throw std::runtime_error("Nepavyko atidaryti failo " + failoVardas);
+    }
+
+    std::stringstream buffer;
+    buffer << failas.rdbuf();
+
+    std::string eilute;
+    std::getline(buffer, eilute);
+
+    while (std::getline(buffer, eilute)) {
+        std::stringstream ss(eilute);
+
+        Studentas s;
+        if (!(ss >> s.vardas >> s.pavarde)) {
+            throw std::runtime_error("Blogas formatas eiluteje " + eilute);
+        }
+
+        int pazymys;
+        while (ss >> pazymys) {
+            s.nd.push_back(pazymys);
+        }
+
+        if (s.nd.empty()) {
+            throw std::runtime_error("Truksta pazymiu eiluteje " + eilute);
+        }
+
+        s.egz = s.nd.back();
+        s.nd.pop_back();
+
+        s.galVid = galutinis(s, vidurkis(s));
+        s.galMed = galutinis(s, mediana(s));
+
+        studentai.push_back(s);
+    }
+}
 
 
 #endif

@@ -107,51 +107,6 @@ void generuotiStudentus(std::vector<Studentas>& studentai)
     }
 }
 
-void nuskaitytiFaila(std::vector<Studentas>& studentai, const std::string& failoVardas)
-{
-  std::ifstream failas(failoVardas);
-  if(!failas)
-  {
-      throw std::runtime_error("Nepavyko atidaryti failo " + failoVardas);
-  }
-
-    std::stringstream buffer;
-    buffer << failas.rdbuf();
-
-    std::string eilute;
-    std::getline(buffer, eilute);
-
-    while (std::getline(buffer,eilute))
-    {
-      std::stringstream ss(eilute);
-
-      Studentas s;
-      if (!(ss >> s.vardas >> s.pavarde)) {
-          throw std::runtime_error("Blogas formatas eiluteje " + eilute);
-      }
-
-      int pazymys;
-      while(ss >> pazymys)
-      {
-        s.nd.push_back(pazymys);
-      }
-
-      if (s.nd.empty()) {
-          throw std::runtime_error("Truksta pazymiu eiluteje " + eilute);
-      }
-
-      s.egz = s.nd.back();
-      s.nd.pop_back();
-
-      s.galVid = galutinis(s, vidurkis(s));
-      s.galMed = galutinis(s, mediana(s));
-
-      studentai.push_back(s);
-    }
-
-    failas.close();
-}
-
 void rodytiRez(const std::vector<Studentas>& studentai)
 {
     std::stringstream buffer;
