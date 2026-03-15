@@ -158,7 +158,7 @@ void paskirstytiStudentusS3(Konteineris& studentai, Konteineris& vargsai)
 
 
 template <typename Konteineris>
-void atliktiAntraTyrima() {
+void atliktiAntraTyrima(int strategija) {
     using namespace std::chrono;
     std::vector<int> kiekiai = {1000, 10000, 100000, 1000000, 10000000};
     int rikiavimas = 3;
@@ -196,7 +196,9 @@ void atliktiAntraTyrima() {
 
         // 3 skirstymas
         auto s3 = high_resolution_clock::now();
-        paskirstytiStudentus(studentai, vargsai, kieti);
+        if (strategija==1) paskirstytiStudentus(studentai,vargsai,kieti);
+        else if (strategija==2) paskirstytiStudentusS2(studentai,vargsai);
+        else if (strategija==3) paskirstytiStudentusS3(studentai,vargsai);
         auto e3 = high_resolution_clock::now();
 
         auto visoPabaiga = high_resolution_clock::now();
