@@ -1,5 +1,5 @@
 
-
+// to do: programos aprasas, naudojimosi instrukcijos, strategijos aprasas ir strategiju rezultatai
 
 
 ## Kompiuterio specifikacijos
