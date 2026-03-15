@@ -138,6 +138,24 @@ void paskirstytiStudentusS2(Konteineris& studentai, Konteineris& vargsai)
                        [](const Studentas& s) { return s.galVid < 5.0; }), studentai.end());
 }
 
+// strategija 3
+template <typename Konteineris>
+void paskirstytiStudentusS3(Konteineris& studentai, Konteineris& vargsai)
+{
+    vargsai.clear();
+
+    // std::partition pertvarko konteineri taip kad visi elementai kurie tenkina salyga butu pradzioje, o kiti gale.
+    // Grazina iterator i pirmo elemento po true grupes pradzia
+    auto mid = std::partition(studentai.begin(), studentai.end(),
+                              [](const Studentas& s) { return s.galVid < 5.0; });
+
+    for (auto it = studentai.begin(); it != mid; ++it) {
+        vargsai.push_back(*it);
+    }
+
+    studentai.erase(studentai.begin(), mid);
+}
+
 
 template <typename Konteineris>
 void atliktiAntraTyrima() {
