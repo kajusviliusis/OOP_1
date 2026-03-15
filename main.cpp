@@ -188,12 +188,25 @@ int main()
               std::cin.clear();
               std::cin.ignore(10000, '\n');
           }
+
+          int strategija;
+          while (true) {
+              std::cout << "Pasirinkite strategija: 1, 2, 3\n";
+              if (std::cin >> strategija && (strategija >= 1 && strategija <= 3)) break;
+              std::cout << "Klaida, iveskite 1-3\n";
+              std::cin.clear();
+              std::cin.ignore(10000, '\n');
+          }
+
           if (tipas == 1) {
-              atliktiAntraTyrima<std::vector<Studentas>>();
+            std::cout << "Atliekamas tyrimas su std::vector, strategija: " << strategija << "\n";
+            atliktiAntraTyrima<std::vector<Studentas>>(strategija);
           } else if (tipas == 2) {
-              atliktiAntraTyrima<std::deque<Studentas>>();
+            std::cout << "Atliekamas tyrimas su std::deque, strategija: " << strategija << "\n";
+            atliktiAntraTyrima<std::deque<Studentas>>(strategija);
           } else {
-              atliktiAntraTyrima<std::list<Studentas>>();
+            std::cout << "Atliekamas tyrimas su std::list, strategija: " << strategija << "\n";
+            atliktiAntraTyrima<std::list<Studentas>>(strategija);
           }
           break;
 
