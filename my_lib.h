@@ -106,6 +106,7 @@ void rikiuotiStudentus(Konteineris& studentai, int pasirinkimas)
     }
 }
 
+// strategija 1
 template <typename Konteineris>
 void paskirstytiStudentus(const Konteineris& studentai, Konteineris& vargsai,
             Konteineris& kieti) {
@@ -118,6 +119,25 @@ void paskirstytiStudentus(const Konteineris& studentai, Konteineris& vargsai,
         }
     }
 }
+
+// strategija 2
+template <typename Konteineris>
+void paskirstytiStudentusS2(Konteineris& studentai, Konteineris& vargsai)
+{
+    vargsai.clear();
+
+    for (const auto& s : studentai) {
+        if (s.galVid < 5.0) {
+            vargsai.push_back(s);
+        }
+    }
+
+    // remove_if pertvarko konteineri, perkelia i gala tuos kuriuos reikia istrinti (grazina iterator i nauja logical end
+    // , o erase istrina from new logical end to real end)
+    studentai.erase(std::remove_if(studentai.begin(), studentai.end(),
+                       [](const Studentas& s) { return s.galVid < 5.0; }), studentai.end());
+}
+
 
 template <typename Konteineris>
 void atliktiAntraTyrima() {
