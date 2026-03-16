@@ -12,6 +12,8 @@ Programoje taip pat įgyvendintos trys strategijos, skirtos palyginti programos 
 
 ## Naudojimosi instrukcijos
 
+Įsiinstaliuokite CMake, C++ kompiliatorių.
+
 1. Klonuoti projektą:
 
 ```
