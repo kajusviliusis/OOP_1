@@ -1,11 +1,16 @@
 
-// to do: programos aprasas, naudojimosi instrukcijos, strategijos aprasas ir strategiju rezultatai
+// to do: programos aprasas, naudojimosi instrukcijos
 
 
 ## Kompiuterio specifikacijos
 - Procesorius: Intel Core i5-12450H, 8 branduoliai
 - RAM: 16 GB
 - SSD: 512 GB
+
+## Strategijų aprašymai:
+1. Bendras studentų konteineris (vector, list, deque) padalijamas į du naujus konteinerius: pažangių ir nepažangių studentų.
+2. Iš bendro konteinerio į nepažangiųjų konteinerį perkeliami tik nepažangūs studentai, tuo pačiu jie pašalinami iš pradinio konteinerio. Ši strategija taupo atmintį, tačiau dažni trynimai gali būti neefektyvūs kai kuriems konteineriams.
+3. Antroji strategija optimizuojama naudojant Standard Template Library (STL) funkcijas.
 
 ## 2 Tyrimas su skirtingais konteineriais (1 Strategija)
 | Studentų kiekis faile | Konteinerio tipas | Nuskaitymas | Rikiavimas | Skirstymas | Programos veikimas |
