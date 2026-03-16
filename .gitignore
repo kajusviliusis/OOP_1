@@ -1,4 +1,5 @@
 .idea/
+build/
 
 Rezultatai.txt
 studentai10000.txt
@@ -13,3 +14,4 @@ vargsai.txt
 kieti.txt
 kursiokai.txt
 programa
+OOP_1
