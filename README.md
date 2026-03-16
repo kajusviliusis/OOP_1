@@ -1,6 +1,3 @@
-
-// to do: naudojimosi instrukcijos
-
 ## Programos aprašymas
 
 Programa skirta apdoroti studentų duomenis ir analizuoti jų akademinius rezultatus. Ji leidžia:
@@ -12,6 +9,27 @@ Programa skirta apdoroti studentų duomenis ir analizuoti jų akademinius rezult
 - Sugeneruoti failą su atsitiktiniais studentų duomenimis
 
 Programoje taip pat įgyvendintos trys strategijos, skirtos palyginti programos veikimo laiką naudojant skirtingus konteinerius (vector, list, deque) skirstant studentus į pažangius ir nepažangius.
+
+## Naudojimosi instrukcijos
+
+1. Klonuoti projektą:
+
+```
+git clone https://github.com/kajusviliusis/OOP_1.git
+cd OOP_1
+```
+2. Sukurti build directory ir kompiliuoti su CMake:
+```
+mkdir build
+cd build
+cmake ..
+cmake --build .
+```
+
+3. Paleisti programą:
+```
+./OOP_1
+```
 
 ## Kompiuterio specifikacijos
 - Procesorius: Intel Core i5-12450H, 8 branduoliai
