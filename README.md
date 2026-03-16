@@ -7,7 +7,7 @@
 - RAM: 16 GB
 - SSD: 512 GB
 
-## 2 Tyrimas su skirtingais konteineriais
+## 2 Tyrimas su skirtingais konteineriais (1 Strategija)
 | Studentų kiekis faile | Konteinerio tipas | Nuskaitymas | Rikiavimas | Skirstymas | Programos veikimas |
 | --------- | ----------------- |-------------| ---------- | ---------- | ------------------ |
 | 1 000 | Vector | 0.0077 s | 0.0009 s | 0.0003 s | 0.0089 s |
@@ -29,3 +29,27 @@
 | 10 000 000 | Vector | 27.4594 s | 12.3457 s | 3.2338 s | 43.0389 s |
 | 10 000 000 | Deque | 26.6834 s | 14.1108 s | 2.7759 s | 43.5701 s |
 | 10 000 000 | List | 26.7975 s | 13.4310 s | 2.8425 s | 43.0711 s |
+
+## 2 Strategija
+| Studentų kiekis faile | Konteinerio tipas | Nuskaitymas | Rikiavimas | Skirstymas | Programos veikimas |
+| --------- | ----------------- |-------------| ---------- | ---------- | ------------------ |
+| 1 000 | Vector | 0.0135 s | 0.0005 s | 0.0001 s | 0.0142 s |
+| 1 000 | Deque | 0.0061 s | 0.0006 s | 0.0001 s | 0.0068 s |
+| 1 000 | List | 0.0055 s | 0.0003 s | 0.0002 s | 0.0061 s |
+| |
+| 10 000 | Vector | 0.0417 s | 0.0058 s | 0.0022 s | 0.0497 s |
+| 10 000 | Deque | 0.0298 s | 0.0069 s | 0.0013 s | 0.0380 s |
+| 10 000 | List | 0.0272 s | 0.0028 s | 0.0021 s | 0.0321 s |
+| |
+| 100 000 | Vector | 0.2902 s | 0.0714 s | 0.0175 s | 0.3791 s |
+| 100 000 | Deque | 0.2716 s | 0.0842 s | 0.0175 s | 0.3733 s |
+| 100 000 | List | 0.2696 s | 0.0425 s | 0.0377 s | 0.3498 s |
+| |
+| 1 000 000 | Vector | 2.6557 s | 0.9046 s | 0.1980 s | 3.7583 s |
+| 1 000 000 | Deque | 2.5693 s | 1.0795 s | 0.2107 s | 3.8595 s |
+| 1 000 000 | List | 2.6213 s | 0.8303 s | 0.4212 s | 3.8728 s |
+| |
+| 10 000 000 | Vector | 27.6374 s | 12.4473 s | 2.2160 s | 42.3007 s |
+| 10 000 000 | Deque | 25.9727 s | 14.0559 s | 2.3694 s | 42.3980 s |
+| 10 000 000 | List | 26.6935 s | 12.8898 s | 4.3207 s | 43.9039 s |
+
