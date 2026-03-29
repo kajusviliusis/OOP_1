@@ -126,16 +126,28 @@ void paskirstytiStudentusS2(Konteineris& studentai, Konteineris& vargsai)
 {
     vargsai.clear();
 
-    for (const auto& s : studentai) {
-        if (s.galVid < 5.0) {
-            vargsai.push_back(s);
-        }
+    // rikiuoti mazejimo tvarka kad vargsai butu gale
+    if constexpr (std::is_same_v<Konteineris, std::list<Studentas>>)
+    {
+        studentai.sort([](const Studentas& a, const Studentas& b) {
+            return a.galVid > b.galVid;
+        });
+    }
+    else
+    {
+        std::sort(studentai.begin(), studentai.end(),
+                  [](const Studentas& a, const Studentas& b) {
+                      return a.galVid > b.galVid;
+                  });
     }
 
-    // remove_if pertvarko konteineri, perkelia i gala tuos kuriuos reikia istrinti (grazina iterator i nauja logical end
-    // , o erase istrina from new logical end to real end)
-    studentai.erase(std::remove_if(studentai.begin(), studentai.end(),
-                       [](const Studentas& s) { return s.galVid < 5.0; }), studentai.end());
+    while (!studentai.empty() && studentai.back().galVid < 5.0)
+    {
+        vargsai.push_back(studentai.back());
+        studentai.pop_back();
+    }
+
+
 }
 
 // strategija 3
